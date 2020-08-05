@@ -4,6 +4,8 @@
 
 import os
 import sys
+import csv
+import datetime
 from time import sleep
 import Adafruit_MCP3008
 import RPi.GPIO as GPIO
@@ -33,16 +35,28 @@ analog_port =0
 # Read the analog input and convert to voltage
 def volt():
         val = mcp.read_adc(analog_port)
-        return (3.3*val/1023)
+	voltage=(3.3*val/1023)*2
+        return voltage
+date_object = str(datetime.date.today())
+date_object='/home/pi/VoltageData/'+date_object+'.csv'
 
-
-
+#This function saves the time and voltage readings in a CSV file format
+#The file is saved with that specific day's date as the name
+def voltage_csv():
+	l1=[]
+	now=datetime.datetime.now()
+	current_time = now.strftime("%H:%M:%S")
+	l1.extend((current_time,voltage))
+	with open(date_object,mode='a') as file:
+		create=csv.writer(file)
+		create.writerow(l1)
 
 try:
     while True:
         voltage=volt()
         print(voltage)
-        sleep(0.5)
+	voltage_csv()
+        sleep(2)
         if voltage>=1.5 and voltage<=2:
             print('Voltage is low')
             sleep(0.5)
@@ -54,9 +68,7 @@ try:
                 print('Battery has recovered but still low!!!')
             elif voltage<=1.5:
                 GPIO.output(11,True)
-                sleep(2)
-                GPIO.output(11,False)
-                sleep(2)
+                sleep(1)
                 os.system('shutdown now')
 except KeyboardInterrupt:
         sys.exit()
