@@ -72,7 +72,7 @@ def next_day():
     t[2]+=1
     t[6]=weekdays_shift()
     if t[2]<=days[t[1]]:
-        t=(t[0],t[1],t[2],9,0,0,t[6],-1,-1)
+        t=(t[0],t[1],t[2],8,0,0,t[6],-1,-1)
     elif t[2]>days[t[1]]:
         t=months_shift()
         t[6]=weekdays_shift()
