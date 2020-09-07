@@ -16,14 +16,14 @@ try:
         count+=1
         if count%10==0:
             voltage_csv()  #Call the function to save the voltage in a csv file after every 300 seconds == 5 minutes
-        if voltage>=3 and voltage<=3.5:
+        if voltage>=3 and voltage<=3.2:
             print('Voltage is low')
         elif voltage<3:
             print('voltage is extremely low!!!')
-            sleep(30)
+            sleep(120)
             voltage=volt()
-            if voltage>3 and voltage<3.5:
-                print(voltage,'\nBattery has recovered but still low!!!')
+            if voltage>3:
+                print(voltage,'\nBattery has recovered.')
             elif voltage<=3:
                 print('The system will shutdown in a few.')
                 alarm()                                      #Call the alarm function to set the alarm.

@@ -10,15 +10,20 @@ cs = digitalio.DigitalInOut(board.D5)
 
 mcp = MCP.MCP3008(spi, cs)
 
-# Reads the analog input at pin 0 of the MCP3008 and returns the corresponding voltage
+
 def volt():
+    """ Reads the analog input at pin 0 of the MCP3008 and 
+    returns the voltage reading"""
+    
     channel = AnalogIn(mcp, MCP.P0)
     voltage=round(channel.voltage*2,1)
     return voltage
 
-#This function saves the time and voltage readings in a CSV file format
-#The file is saved with that specific day's date as the name
+
 def voltage_csv():
+    """ This function saves the time and voltage readings in a CSV file format
+    The file is saved with that specific day's date as the name"""
+
     t=rtc.datetime
     name_by_date =str(t.tm_year)+'-'+str(t.tm_mon)+'-'+str(t.tm_mday)
     name_by_date='/home/pi/VoltageData/'+name_by_date+'.csv'
