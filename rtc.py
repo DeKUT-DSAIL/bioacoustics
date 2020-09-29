@@ -57,7 +57,7 @@ def months_shift():
 
 
 def next_day():
-    """ Sets the alarm at 8.00 am the following day"""
+    """ Sets the alarm at 9.00 am the following day"""
 
     t=time_list()
     days = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
@@ -69,7 +69,7 @@ def next_day():
         t=months_shift()
         t[6]=weekdays_shift()
         t[2]=1
-        t=(t[0],t[1],t[2],8,0,0,t[6],-1,-1)
+        t=(t[0],t[1],t[2],9,0,0,t[6],-1,-1)
     return t
 
 
@@ -86,7 +86,7 @@ def alarm_time1():
 
 
 def alarm_time2():
-    """ Set the alarm at 8.00 am the following day."""
+    """ Set the alarm at 9.00 am the following day."""
 
     t=next_day()
     rtc.alarm1 = (time.struct_time(t), "daily")
@@ -95,11 +95,11 @@ def alarm_time2():
         rtc.alarm1_status = False
 
 def alarm_time3():
-    """ Set the RTC alarm at 8 if the alarm function
+    """ Set the RTC alarm at 9 if the alarm function
     was called past midnight."""
 
     t=time_list()
-    t[3]=8
+    t[3]=9
     t[4]=0
     t[5]=0
     t=tuple(t)
@@ -115,7 +115,7 @@ def alarm():
 
     t=time_list()
     t[3]=t[3]+1
-    if t[3]<17:
+    if t[3]>=8 and t[3]<17:
         alarm_time1()
     elif t[3]==17 and t[4]<30:
         alarm_time1()
@@ -128,5 +128,5 @@ def alarm():
     elif t[3]==24 and t[4]>=58:
         time.sleep(125)
         alarm_time3()
-    elif t[3]>=0 and t[3]<=7:
+    elif t[3]>=0 and t[3]<=8:
         alarm_time3()

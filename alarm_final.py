@@ -22,6 +22,7 @@ try:
             print('voltage is extremely low!!!')
             sleep(120)
             voltage=volt()
+            voltage_csv()
             if voltage>3:
                 print(voltage,'\nBattery has recovered.')
             elif voltage<=3:
