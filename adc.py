@@ -16,7 +16,7 @@ def volt():
     returns the voltage reading"""
     
     channel = AnalogIn(mcp, MCP.P0)
-    voltage=round(channel.voltage*2,1)
+    voltage=round(channel.voltage*2,2)
     return voltage
 
 
