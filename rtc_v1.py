@@ -1,3 +1,7 @@
+"""
+First rtc module version
+"""
+
 import time
 import board
 import busio
