@@ -22,7 +22,7 @@ def volt():
 
 def voltage_csv():
     """ This function saves the time and voltage readings in a CSV file format
-    The file is saved with that specific day's date as the name"""
+    The file is saved with that specific day's date as the name."""
 
     t=rtc.datetime
     name_by_date =str(t.tm_year)+'-'+str(t.tm_mon)+'-'+str(t.tm_mday)
