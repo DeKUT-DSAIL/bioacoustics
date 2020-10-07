@@ -12,9 +12,9 @@ mcp = MCP.MCP3008(spi, cs)
 
 
 def volt():
-    """ Reads the analog input at pin 0 of the MCP3008 and 
+    """ Reads the analog input at pin 0 of the MCP3008 and
     returns the voltage reading"""
-    
+
     channel = AnalogIn(mcp, MCP.P0)
     voltage=round(channel.voltage*2,2)
     return voltage
