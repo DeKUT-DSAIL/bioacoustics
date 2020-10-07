@@ -2,8 +2,8 @@
 This program sets the ds3231 rtc alarm to wake
 the raspberrypi everyday at 5.00 am. In this program,
 .struct_time Class of the python time module is used
-to setting the alarm. An example of the time.struct_time Class
-object takes the form:
+to set the alarm time. An example of the time.struct_time 
+Class object and the form it takes is shown below:
 
 time.struct_time(tm_year=2020, tm_mon=10, tm_mday=7, 
                 tm_hour=11, tm_min=44, tm_sec=49, 
