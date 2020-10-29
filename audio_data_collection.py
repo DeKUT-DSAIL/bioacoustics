@@ -58,6 +58,14 @@ parser.add_argument('-c_s',
                     help="""Number of blocks to use in setting the still condition of the system.
                     Preferrably blocks of an audio sample of length 30s""")
 
+parser.add_argument('-s_s',
+                    '--samples_saved',
+                    type=int,
+                    metavar='',
+                    default=500,
+                    help="""Number of samples to save as a single wav file.
+                         This determines the length of the recording depending
+                         on the samplerate""")
 
 
 args = parser.parse_args()
@@ -142,7 +150,7 @@ def main():
                     print('Activity detected')
                     blocks_of_interest = np.array(my_block)
 
-                    for i in range(499):
+                    for i in range(args.samples_saved - 1):
                         my_block = q.get()
                         my_block = my_block.flatten()
                         blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
