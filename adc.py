@@ -1,6 +1,9 @@
+import os
 import csv
-from rtc import *
+import board
+import busio
 import digitalio
+from rtc import time_dict
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
@@ -16,22 +19,19 @@ def volt():
     returns the voltage reading"""
 
     channel = AnalogIn(mcp, MCP.P0)
-    voltage=round(channel.voltage*2,2)
+    voltage = round(channel.voltage * 2, 2)
     return voltage
 
 
-def voltage_csv():
+def voltage_csv(path, folder_path, file_name_by_date):
     """ This function saves the time and voltage readings in a CSV file format
     The file is saved with that specific day's date as the name."""
 
-    t=rtc.datetime
-    name_by_date =str(t.tm_year)+'-'+str(t.tm_mon)+'-'+str(t.tm_mday)
-    name_by_date='/home/pi/VoltageData/'+name_by_date+'.csv'
-    l1=[]
-    t=rtc.datetime
-    voltage=volt()
-    current_time =str(t.tm_hour)+'.'+str(t.tm_min)+'.'+str(t.tm_sec)
-    l1.extend((current_time,voltage))
-    with open(name_by_date,mode='a') as file:
-        create=csv.writer(file)
-        create.writerow(l1)
+    l = []
+    t = time_dict()
+    voltage = volt()
+    current_time = str(t['tm_hour']) + '.' + str(t['tm_min']) + '.' + str(t['tm_sec'])
+    l.extend((current_time, voltage))
+    with open(file_name_by_date, mode = 'a') as file:
+        create = csv.writer(file)
+        create.writerow(l)
