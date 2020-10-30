@@ -4,11 +4,11 @@ import queue
 import argparse
 import numpy as np
 import soundfile as sf
-import sounddevice as sd
 from time import sleep
+import sounddevice as sd
 from rtc import time_dict
 from shutil import disk_usage
-import matplotlib.pyplot as plt
+
 
 sleep(60) #sleep for 1 minute to give the pi time to load the external storage drive
 
@@ -119,7 +119,9 @@ def audio_file_save(data):
     """ Saves recorded sound in an external storage.
     It monitors the remaining storage and stops saving
     the files when it is almost full but instead records
-    whenever activity is detected in a text file"""
+    whenever activity is detected in a text file
+    
+    Args: data- a numpy array containing audio samples."""
 
     t = time_dict()
     current_time =  str(t['tm_hour']) + '-' + str(t['tm_min']) + '-' +str(t['tm_sec'])
