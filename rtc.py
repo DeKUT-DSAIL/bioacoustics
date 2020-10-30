@@ -79,7 +79,9 @@ def months_shift():
     return t
 
 def next_day(hour):
-    """ Sets the alarm at 5.00 am the following day"""
+    """ Sets the alarm at 5.00 am the following day.
+    Args: hour - an integer which determines the hour 
+                 to set the alarm."""
 
     t = time_dict()
     days = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30,
@@ -106,7 +108,9 @@ def next_day(hour):
     return t
 
 def alarm(hour):
-    """ Set the alarm at 5.00 am the following day."""
+    """ Set the alarm at 5.00 am the following day.
+    Args: hour - an integer which determines the hour 
+                 to set the alarm."""
     hour = hour
     t = next_day(hour)
     rtc.alarm1 = (time.struct_time(t), "daily")
