@@ -8,8 +8,9 @@ from time import sleep
 from rtc import time_dict, alarm
 from adc import volt, voltage_csv
 
+sleep(60) #sleep for 1 minute to give the pi time to load the external storage drive
 
-parser = argparse.ArgumentParser(description='Save Audio Recordings')
+parser = argparse.ArgumentParser(description='Controls the shutting down and waking of the Raspberry Pi.')
 parser.add_argument('-d',
                     '--depth_of_discharge',
                     type=float,
