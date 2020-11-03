@@ -146,7 +146,7 @@ def main():
             mean, std_dev = calibration()
             while True:
                 energy, my_block = block_energy()
-                std_deviation = abs(energy - mean)
+                std_deviation = energy - mean
 
                 if std_deviation >= 2 * std_dev:
                     print('Activity detected')
