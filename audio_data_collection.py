@@ -115,7 +115,6 @@ def calibration():
         l.append(energy)
     std_dev = np.std(l)
     mean = np.mean(l)
-    print('Done calibrating!')
     return mean, std_dev
 
 
