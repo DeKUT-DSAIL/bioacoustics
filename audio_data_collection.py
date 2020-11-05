@@ -69,6 +69,13 @@ parser.add_argument('-l_r',
                     default=10,
                     help='Length of each audio file to be saved in seconds')
 
+parser.add_argument('-r_t',
+                    '--recalibration_time',
+                    type=int,
+                    metavar='',
+                    default=30,
+                    help='Time in minutes after which the system should recalibrate itself')
+
 
 args = parser.parse_args()
 
@@ -114,7 +121,7 @@ def calibration():
 
 
 def block_energy():
-    """ Returns a block of 320 audio samples and its energy
+    """ Returns a block of audio samples and its energy
     The block is fetched from a queue containing the audio blocks"""
 
     my_block = q.get()
@@ -155,7 +162,7 @@ def main():
             mean, std_dev = calibration()
             print('done')
             t = time_dict()
-            time_start = datetime(t['tm_year'],
+            start_time = datetime(t['tm_year'],
                                 t['tm_mon'],
                                 t['tm_mday'],
                                 t['tm_hour'],
@@ -174,10 +181,10 @@ def main():
                                     t['tm_min'],
                                     t['tm_sec'])
 
-                time_lapse = (time_start - current_time)
+                time_lapse = (current_time - start_time)
                 time_lapse = (time_lapse.total_seconds()) / 60  #time lapse in minutes
 
-                if time_lapse < 30:
+                if time_lapse < args.recalibration_time:
 
                     print('listening')
                     energy, my_block = block_energy()
