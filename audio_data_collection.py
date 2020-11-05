@@ -140,7 +140,7 @@ def audio_file_save(data):
     current_time =  str(t['tm_hour']) + '-' + str(t['tm_min']) + '-' +str(t['tm_sec'])
     usage = disk_usage(args.path)
     usage = dict([('total_space', usage[0]), ('used_space', usage[1])])
-    if usage['used_space'] / usage['total_space'] >= args.storage_threshold:
+    if usage['used_space'] / usage['total_space'] < args.storage_threshold:
         file_path = folder_path + '/' +name_by_date + '-' + current_time + '.wav'
         sf.write(file_path , data, args.samplerate)
 
