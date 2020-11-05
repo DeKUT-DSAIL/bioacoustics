@@ -36,6 +36,7 @@ parser.add_argument('-p',
                     '--path',
                     type=str,
                     metavar='',
+                    default='/home/pi/',
                     help='path to the external storage device')
 
 args = parser.parse_args()
