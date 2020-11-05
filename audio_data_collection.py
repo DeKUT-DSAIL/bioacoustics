@@ -7,7 +7,6 @@ import soundfile as sf
 from time import sleep
 import sounddevice as sd
 from rtc import time_dict
-from datetime import datetime
 from shutil import disk_usage
 
 
@@ -79,11 +78,11 @@ parser.add_argument('-r_t',
 
 args = parser.parse_args()
 
-BLOCKSIZE = (args.blocklength / 1000) * args.samplerate  #Divide by a thousand to convert milliseconds into seconds 
+BLOCKSIZE = int((args.blocklength / 1000) * args.samplerate)  #Divide by a thousand to convert milliseconds into seconds 
 
-CALIBRATION_SAMPLES = (args.calibration_duration) // (args.blocklength / 1000) 
+CALIBRATION_SAMPLES = int((args.calibration_duration) / (args.blocklength / 1000)) 
 
-SAMPLES_SAVED = (args.samplerate / BLOCKSIZE) * args.length_of_saved_audio
+SAMPLES_SAVED = int((args.samplerate / BLOCKSIZE) * args.length_of_saved_audio)
 
 t = time_dict()
 name_by_date = '/' + str(t['tm_year']) + '-' + str(t['tm_mon']) + '-' + str(t['tm_mday'])
@@ -173,39 +172,20 @@ def main():
 
 
             while True:
-                t = time_dict()
-                current_time = datetime(t['tm_year'],
-                                    t['tm_mon'],
-                                    t['tm_mday'],
-                                    t['tm_hour'],
-                                    t['tm_min'],
-                                    t['tm_sec'])
+                energy, my_block = block_energy()
+                std_deviation = energy - mean
 
-                time_lapse = (current_time - start_time)
-                time_lapse = (time_lapse.total_seconds()) / 60  #time lapse in minutes
+                if std_deviation >= 2 * std_dev:
+                    print('Activity detected')
+                    blocks_of_interest = np.array(my_block)
 
-                if time_lapse < args.recalibration_time:
+                    for i in range(SAMPLES_SAVED - 1):
+                        my_block = q.get()
+                        my_block = my_block.flatten()
+                        blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
 
-                    print('listening')
-                    energy, my_block = block_energy()
-                    std_deviation = energy - mean
+                    audio_file_save(blocks_of_interest)
 
-                    if std_deviation >= 2 * std_dev:
-                        print('Activity detected')
-                        blocks_of_interest = np.array(my_block)
-
-                        for i in range(SAMPLES_SAVED - 1):
-                            my_block = q.get()
-                            my_block = my_block.flatten()
-                            blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
-
-                        audio_file_save(blocks_of_interest)
-
-                else:
-                    mean, std_dev = calibration()
-                    print('recalibrating')
-                    time_start = current_time
-                    print('done')
                     
 
     except KeyboardInterrupt:
