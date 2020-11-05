@@ -7,6 +7,7 @@ import soundfile as sf
 from time import sleep
 import sounddevice as sd
 from rtc import time_dict
+from datetime import datetime
 from shutil import disk_usage
 
 
@@ -22,12 +23,14 @@ parser.add_argument('-ch',
                     default=1,
                     help='Number of channels (>0) to be recorded')
 parser.add_argument('-b',
-                    '--blocksize',
+                    '--blocklength',
                     type=int,
                     metavar='',
-                    default=960,
-                    help="""Number of samples in a single chunk of audio sample. Preferred 
-                            blocksize is of length 20ms at the sampling frequency used""")
+                    default=20,
+                    help="""The length of block to process in milliseconds. This and the 
+                            sampling frequency used determine the size of block to use in calibrating 
+                            the system, pass to the audio_callback function, added to the queue and
+                            used in activity detection. Preferred blocksize is of length 20ms""")
 
 parser.add_argument('-fs',
                     '--samplerate',
@@ -50,25 +53,30 @@ parser.add_argument('-p',
                     metavar='',
                     help='path to the external storage device')
 
-parser.add_argument('-c_s',
-                    '--calibration_samples',
+parser.add_argument('-c_d',
+                    '--calibration_duration',
                     type=int,
                     metavar='',
-                    default=1500,
-                    help="""Number of blocks to use in setting the still condition of the system.
-                    Preferrably blocks of an audio sample of length 30s""")
+                    default=30,
+                    help="""Time in seconds to calibrate the system. This determine the number
+                        of blocks to use in setting the still condition of the system.
+                        Preferrably blocks of an audio sample of length 30s""")
 
-parser.add_argument('-s_s',
-                    '--samples_saved',
+parser.add_argument('-l_r',
+                    '--length_of_saved_audio',
                     type=int,
                     metavar='',
-                    default=500,
-                    help="""Number of samples to save as a single wav file.
-                         This determines the length of the recording depending
-                         on the samplerate""")
+                    default=10,
+                    help='Length of each audio file to be saved in seconds')
 
 
 args = parser.parse_args()
+
+BLOCKSIZE = (args.blocklength / 1000) * args.samplerate  #Divide by a thousand to convert milliseconds into seconds 
+
+CALIBRATION_SAMPLES = (args.calibration_duration) // (args.blocklength / 1000) 
+
+SAMPLES_SAVED = (args.samplerate / BLOCKSIZE) * args.length_of_saved_audio
 
 t = time_dict()
 name_by_date = '/' + str(t['tm_year']) + '-' + str(t['tm_mon']) + '-' + str(t['tm_mday'])
@@ -94,7 +102,7 @@ def calibration():
     condition for the purpose of activity detection"""
 
     l = []
-    for i in range(args.calibration_samples):
+    for i in range(CALIBRATION_SAMPLES):
         block = q.get()
         block = block.flatten()
         energy = np.sum(block ** 2)
@@ -140,24 +148,58 @@ def audio_file_save(data):
 def main():
     try:
         with sd.InputStream(samplerate = args.samplerate,
-                            blocksize = args.blocksize,
+                            blocksize = BLOCKSIZE,
                             channels = args.channels,
                             callback = audio_callback):
+            print('calibrating')
             mean, std_dev = calibration()
+            print('done')
+            t = time_dict()
+            time_start = datetime(t['tm_year'],
+                                t['tm_mon'],
+                                t['tm_mday'],
+                                t['tm_hour'],
+                                t['tm_min'],
+                                t['tm_sec'])
+
+
+
+
             while True:
-                energy, my_block = block_energy()
-                std_deviation = energy - mean
+                t = time_dict()
+                current_time = datetime(t['tm_year'],
+                                    t['tm_mon'],
+                                    t['tm_mday'],
+                                    t['tm_hour'],
+                                    t['tm_min'],
+                                    t['tm_sec'])
 
-                if std_deviation >= 2 * std_dev:
-                    print('Activity detected')
-                    blocks_of_interest = np.array(my_block)
+                time_lapse = (time_start - current_time)
+                time_lapse = (time_lapse.total_seconds()) / 60  #time lapse in minutes
 
-                    for i in range(args.samples_saved - 1):
-                        my_block = q.get()
-                        my_block = my_block.flatten()
-                        blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
+                if time_lapse < 30:
 
-                    audio_file_save(blocks_of_interest)
+                    print('listening')
+                    energy, my_block = block_energy()
+                    std_deviation = energy - mean
+
+                    if std_deviation >= 2 * std_dev:
+                        print('Activity detected')
+                        blocks_of_interest = np.array(my_block)
+
+                        for i in range(SAMPLES_SAVED - 1):
+                            my_block = q.get()
+                            my_block = my_block.flatten()
+                            blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
+
+                        audio_file_save(blocks_of_interest)
+
+                else:
+                    mean, std_dev = calibration()
+                    print('recalibrating')
+                    time_start = current_time
+                    print('done')
+                    
 
     except KeyboardInterrupt:
         sys.exit()
