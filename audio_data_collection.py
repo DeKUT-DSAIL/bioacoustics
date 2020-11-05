@@ -157,20 +157,8 @@ def main():
                             blocksize = BLOCKSIZE,
                             channels = args.channels,
                             callback = audio_callback):
-            print('calibrating')
+          
             mean, std_dev = calibration()
-            print('done')
-            t = time_dict()
-            start_time = datetime(t['tm_year'],
-                                t['tm_mon'],
-                                t['tm_mday'],
-                                t['tm_hour'],
-                                t['tm_min'],
-                                t['tm_sec'])
-
-
-
-
             while True:
                 energy, my_block = block_energy()
                 std_deviation = energy - mean
