@@ -50,6 +50,7 @@ parser.add_argument('-p',
                     '--path',
                     type=str,
                     metavar='',
+                    default='/home/pi/recordings',
                     help='path to the external storage device')
 
 parser.add_argument('-c_d',
@@ -133,7 +134,7 @@ def audio_file_save(data):
     It monitors the remaining storage and stops saving
     the files when it is almost full but instead records
     whenever activity is detected in a text file
-    
+
     Args: data- a numpy array containing audio samples."""
 
     t = time_dict()
@@ -156,7 +157,7 @@ def main():
                             blocksize = BLOCKSIZE,
                             channels = args.channels,
                             callback = audio_callback):
-          
+
             mean, std_dev = calibration()
             while True:
                 energy, my_block = block_energy()
@@ -173,7 +174,6 @@ def main():
 
                     audio_file_save(blocks_of_interest)
 
-                    
 
     except KeyboardInterrupt:
         sys.exit()
