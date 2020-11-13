@@ -1,94 +1,43 @@
 import os
 import sys
 import queue
-import argparse
 import numpy as np
 import soundfile as sf
 from time import sleep
 import sounddevice as sd
-from rtc import time_dict
 from shutil import disk_usage
+from datetime import datetime
 
+sleep(30) #sleep for thirty seconds to wait the Pi's time to be set.
 
-sleep(60) #sleep for 1 minute to give the pi time to load the external storage drive
+CHANNELS = 1
+
+SAMPLERATE = 48000
+
+CALIBRATION_DURATION = 30 #seconds
+
+BLOCK_LENGTH = 20e-3 #20 milliseconds
+
+LENGTH_OF_SAVED_AUDIO = 10 #seconds
+
+PATH = '/home/pi/recordings' #path to store recordings
+
+STORAGE_THRESHOLD = 0.8 #ratio of used to total storage
+
+BLOCKSIZE = int(BLOCK_LENGTH * SAMPLERATE) #number of samples to process
+
+CALIBRATION_BLOCKS = int(CALIBRATION_DURATION / BLOCK_LENGTH) #number of blocks to set the still condition
+
+SAMPLES_SAVED = int((SAMPLERATE / BLOCKSIZE) * LENGTH_OF_SAVED_AUDIO) #number of samples to save as a single file
+
 
 q = queue.Queue()
 
-parser = argparse.ArgumentParser(description='Save Audio Recordings')
-parser.add_argument('-ch',
-                    '--channels',
-                    type=int,
-                    metavar='',
-                    default=1,
-                    help='Number of channels (>0) to be recorded')
-parser.add_argument('-b',
-                    '--blocklength',
-                    type=int,
-                    metavar='',
-                    default=20,
-                    help="""The length of block to process in milliseconds. This and the 
-                            sampling frequency used determine the size of block to use in calibrating 
-                            the system, pass to the audio_callback function, added to the queue and
-                            used in activity detection. Preferred blocksize is of length 20ms""")
+t = datetime.now()
+date = t.strftime('%Y-%m-%d')
+name_by_date = '/' + date
 
-parser.add_argument('-fs',
-                    '--samplerate',
-                    type=int,
-                    metavar='',
-                    default=48000,
-                    help="""The sampling frequency of audio signal. For the 
-                    Raspberry pi, only two are known to work i.e. 44100 and 48000kHz""")
-
-parser.add_argument('-s_t',
-                    '--storage_threshold',
-                    type=float,
-                    metavar='',
-                    default=0.99,
-                    help='Ratio of used to free space in the external storage device')
-
-parser.add_argument('-p',
-                    '--path',
-                    type=str,
-                    metavar='',
-                    default='/home/pi/recordings',
-                    help='path to the external storage device')
-
-parser.add_argument('-c_d',
-                    '--calibration_duration',
-                    type=int,
-                    metavar='',
-                    default=30,
-                    help="""Time in seconds to calibrate the system. This determine the number
-                        of blocks to use in setting the still condition of the system.
-                        Preferrably blocks of an audio sample of length 30s""")
-
-parser.add_argument('-l_r',
-                    '--length_of_saved_audio',
-                    type=int,
-                    metavar='',
-                    default=10,
-                    help='Length of each audio file to be saved in seconds')
-
-parser.add_argument('-r_t',
-                    '--recalibration_time',
-                    type=int,
-                    metavar='',
-                    default=30,
-                    help='Time in minutes after which the system should recalibrate itself')
-
-
-args = parser.parse_args()
-
-BLOCKSIZE = int((args.blocklength / 1000) * args.samplerate)  #Divide by a thousand to convert milliseconds into seconds 
-
-CALIBRATION_SAMPLES = int((args.calibration_duration) / (args.blocklength / 1000)) 
-
-SAMPLES_SAVED = int((args.samplerate / BLOCKSIZE) * args.length_of_saved_audio)
-
-t = time_dict()
-name_by_date = '/' + str(t['tm_year']) + '-' + str(t['tm_mon']) + '-' + str(t['tm_mday'])
-
-folder_path = args.path + name_by_date
+folder_path = PATH + name_by_date
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
@@ -109,7 +58,7 @@ def calibration():
     condition for the purpose of activity detection"""
 
     l = []
-    for i in range(CALIBRATION_SAMPLES):
+    for i in range(CALIBRATION_BLOCKS):
         block = q.get()
         block = block.flatten()
         energy = np.sum(block ** 2)
@@ -137,25 +86,25 @@ def audio_file_save(data):
 
     Args: data- a numpy array containing audio samples."""
 
-    t = time_dict()
-    current_time =  str(t['tm_hour']) + '-' + str(t['tm_min']) + '-' +str(t['tm_sec'])
-    usage = disk_usage(args.path)
+    t = datetime.now()
+    current_time = t.strftime('%H:%M:%S')
+    usage = disk_usage(PATH)
     usage = dict([('total_space', usage[0]), ('used_space', usage[1])])
-    if usage['used_space'] / usage['total_space'] < args.storage_threshold:
+    if usage['used_space'] / usage['total_space'] < STORAGE_THRESHOLD:
         file_path = folder_path + '/' +name_by_date + '-' + current_time + '.wav'
-        sf.write(file_path , data, args.samplerate)
+        sf.write(file_path , data, SAMPLERATE)
 
     else:
-        name = args.path + name_by_date + '.txt'
+        name = PATH + name_by_date + '.txt'
         f = open(name, 'a')
         f.write(current_time + '\t Activity Detected \n')
         f.close()
 
 def main():
     try:
-        with sd.InputStream(samplerate = args.samplerate,
+        with sd.InputStream(samplerate = SAMPLERATE,
                             blocksize = BLOCKSIZE,
-                            channels = args.channels,
+                            channels = CHANNELS,
                             callback = audio_callback):
 
             mean, std_dev = calibration()
