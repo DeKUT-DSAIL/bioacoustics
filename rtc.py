@@ -2,11 +2,11 @@
 This program sets the ds3231 rtc alarm to wake
 the raspberrypi everyday at 5.00 am. In this program,
 .struct_time Class of the python time module is used
-to set the alarm time. An example of the time.struct_time 
+to set the alarm time. An example of the time.struct_time
 Class object and the form it takes is shown below:
 
-time.struct_time(tm_year=2020, tm_mon=10, tm_mday=7, 
-                tm_hour=11, tm_min=44, tm_sec=49, 
+time.struct_time(tm_year=2020, tm_mon=10, tm_mday=7,
+                tm_hour=11, tm_min=44, tm_sec=49,
                 tm_wday=2, tm_yday=-1, tm_isdst=-1)
 
 
@@ -78,10 +78,8 @@ def months_shift():
         t['tm_mon'] = 1
     return t
 
-def next_day(hour):
-    """ Sets the alarm at 5.00 am the following day.
-    Args: hour - an integer which determines the hour 
-                 to set the alarm."""
+def next_day():
+    """ Returns time to set the alarm for the next day"""
 
     t = time_dict()
     days = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30,
@@ -92,7 +90,7 @@ def next_day(hour):
         t = (t['tm_year'],
             t['tm_mon'],
             t['tm_mday'],
-            hour, 0, 0,
+            5, 0, 0,
             t['tm_wday'],
             -1,-1)
     elif t['tm_mday'] > days[t['tm_mon']]:
@@ -102,21 +100,17 @@ def next_day(hour):
         t = (t['tm_year'],
             t['tm_mon'],
             t['tm_mday'],
-            hour,0,0,
+            5,0,0,
             t['tm_wday'],
             -1,-1)
     return t
 
-def alarm(hour):
-    """ Set the alarm at 5.00 am the following day.
-    Args: hour - an integer which determines the hour 
-                 to set the alarm."""
-    hour = hour
-    t = next_day(hour)
+def alarm():
+    """ Set the alarm at 5.00 am the following"""
+
+    t = next_day()
     rtc.alarm1 = (time.struct_time(t), "daily")
     if rtc.alarm1_status:
         #print("wake up!")
         rtc.alarm1_status = False
-
-
 
