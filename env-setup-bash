@@ -1,0 +1,22 @@
+#!/bin/bash
+
+python3 -m venv dsp-env
+
+source dsp-env/bin/activate
+
+sudo apt-get install llvm
+sudo apt-get install libasound-dev
+sudo apt-get install portaudio19-dev
+sudo apt-get install libatlas-base-dev
+pip3 install numpy
+pip3 install pandas
+pip3 install soundfile
+pip3 install matplotlib
+pip3 install sounddevice
+pip3 install numba==0.48.0
+pip3 install librosa
+pip3 install adafruit-blinka
+pip3 install adafruit-circuitpython-busdevice
+pip3 install adafruit-circuitpython-register
+pip3 install adafruit-circuitpython-ds3231
+pip3 install adafruit-circuitpython-mcp3xxx
