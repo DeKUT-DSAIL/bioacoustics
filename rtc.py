@@ -78,7 +78,7 @@ def months_shift():
         t['tm_mon'] = 1
     return t
 
-def next_day():
+def next_day(hour):
     """ Returns time to set the alarm for the next day"""
 
     t = time_dict()
@@ -90,7 +90,7 @@ def next_day():
         t = (t['tm_year'],
             t['tm_mon'],
             t['tm_mday'],
-            5, 0, 0,
+            hour, 0, 0,
             t['tm_wday'],
             -1,-1)
     elif t['tm_mday'] > days[t['tm_mon']]:
@@ -100,15 +100,15 @@ def next_day():
         t = (t['tm_year'],
             t['tm_mon'],
             t['tm_mday'],
-            5,0,0,
+            hour,0,0,
             t['tm_wday'],
             -1,-1)
     return t
 
-def alarm():
+def alarm(hour):
     """ Set the alarm at 5.00 am the following"""
-
-    t = next_day()
+    hour = hour
+    t = next_day(hour)
     rtc.alarm1 = (time.struct_time(t), "daily")
     if rtc.alarm1_status:
         #print("wake up!")
