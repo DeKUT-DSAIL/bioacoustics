@@ -24,16 +24,13 @@ def volt():
     return voltage
 
 
-def voltage_csv(voltage, folder_path):
+def voltage_csv(path, current_time, voltage):
     """ This function saves the time and voltage readings in a CSV file format
     The file is saved with that specific day's date as the name."""
 
     l = []
-    t = datetime.datetime.now()
-    name_by_date = t.strftime('%Y-%m-%d') + '.csv'
-    file_path = os.path.join( folder_path, name_by_date)
-    time = t.strftime('%H:%M:%S')
-    l.extend((time, voltage))
-    with open(file_path, mode = 'a') as file:
+    l.extend((current_time, voltage))
+    
+    with open(path, mode = 'a') as file:
         create = csv.writer(file)
         create.writerow(l)
