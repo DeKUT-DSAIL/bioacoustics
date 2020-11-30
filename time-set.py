@@ -60,5 +60,5 @@ try:
     subprocess.call(['sudo', 'date', '-s', time]) #set the time
 
 except Exception as time_err:
-    logging.info(str(er))
+    logging.info(str(err))
 
