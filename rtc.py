@@ -100,7 +100,7 @@ def next_day(hour):
         t = (t['tm_year'],
             t['tm_mon'],
             t['tm_mday'],
-            hour,0,0,
+            hour, 0, 0,
             t['tm_wday'],
             -1,-1)
     return t
