@@ -9,7 +9,7 @@ import subprocess
 from time import sleep
 from datetime import datetime
 
-sleep(30) #delay for thirty seconds to have the pi's time set
+#sleep(120) #delay for 2 minute to have the pi's time set
 
 logging.basicConfig(filename='power.log',
                     level=logging.DEBUG,
@@ -94,7 +94,7 @@ try:
 
     def rpi_shutdown(message):
         print('The system will shutdown in a few.')
-        rtc.alarm(hour)                                      #Call the al$
+        rtc.alarm(args.wake_hour)                                      #Call the al$
         gate_pulse.value = True #Set GPIO pin 18 high to gate trigger the timer circuit thyristor
         sleep(0.5)
         gate_pulse.value = False
@@ -110,7 +110,7 @@ try:
             hour = int(t.strftime('%H'))
             if hour >= args.shutdown_hour:
                 message = 'Shutting down time'
-                rpi_shutdown(message)
+                #rpi_shutdown(message)
             voltage = adc.volt()
             print(voltage)
             count += 1
@@ -146,3 +146,4 @@ try:
 
 except Exception as err:
     logging.info(str(err))
+
