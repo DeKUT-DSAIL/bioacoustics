@@ -9,7 +9,7 @@ import subprocess
 from time import sleep
 from datetime import datetime
 
-#sleep(120) #delay for 2 minute to have the pi's time set
+sleep(120) #delay for 2 minute to have the pi's time set
 
 logging.basicConfig(filename='power.log',
                     level=logging.DEBUG,
