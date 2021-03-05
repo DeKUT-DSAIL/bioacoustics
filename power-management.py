@@ -110,7 +110,7 @@ try:
             hour = int(t.strftime('%H'))
             if hour >= args.shutdown_hour:
                 message = 'Shutting down time'
-                #rpi_shutdown(message)
+                rpi_shutdown(message)
             voltage = adc.volt()
             print(voltage)
             count += 1
