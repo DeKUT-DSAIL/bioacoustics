@@ -30,7 +30,7 @@ def voltage_csv(path, current_time, voltage):
 
     l = []
     l.extend((current_time, voltage))
-    
+
     with open(path, mode = 'a') as file:
         create = csv.writer(file)
         create.writerow(l)
