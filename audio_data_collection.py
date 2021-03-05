@@ -1,8 +1,11 @@
 import os
+import csv
 import sys
+import board
 import queue
 import logging
 import argparse
+import digitalio
 import subprocess
 import numpy as np
 import soundfile as sf
@@ -64,7 +67,7 @@ try:
                             default='none',
                             metavar='',
                             help="""Name of the external storage. Default is 'none'. If no storage
-                            name is passed the program will store the recordings in the SD card. The 
+                            name is passed the program will store the recordings in the SD card. The
                             external device should not be named as 'none'!!!""")
 
     parser.add_argument('-s_t',
@@ -94,13 +97,16 @@ try:
 
     q = queue.Queue()
 
+    gate_pulse = digitalio.DigitalInOut(board.D23)  #set GPIO pin 23 as a digital pin
+    gate_pulse.direction = digitalio.Direction.OUTPUT #set GPIO pin as an output pin
+
     def audio_callback(indata, frames, time, status):
         if status:
             print(status)
 
         q.put(indata.copy())
 
-    def calibration():
+    def calibration(date):
         """Returns the mean and standard deviation
         of the energies of blocks of sound samples
         for calibration in setting still
@@ -114,6 +120,13 @@ try:
             l.append(energy)
         std_dev = np.std(l)
         mean = np.mean(l)
+        l = []
+        l.extend((date, mean, std_dev))
+
+        with open('calibration.csv', mode = 'a') as file:
+            create = csv.writer(file)
+            create.writerow(l)
+        print(mean, std_dev)
         return mean, std_dev
 
 
@@ -126,30 +139,30 @@ try:
         energy = np.sum(my_block ** 2)
         return energy, my_block
 
-    def sd_card(name_by_date):
+    def sd_card():
         """Returns a string which is the path to store recordings in the SD card.
         Called when there is no external storage, or when the system
         can't writ to the external storage"""
 
-        folder_path = os.path.join('/home/pi/', args.directory_name, name_by_date)
+        folder_path = os.path.join('/home/pi/', args.directory_name)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
         return folder_path
 
 
-    def external_storage(name_by_date):
+    def external_storage():
         """Returns a string which is the path to store recordings in the external storage.
-        Called when the user plugs in an external storage device and parse its name in 
+        Called when the user plugs in an external storage device and parse its name in
         command line"""
 
-        folder_path = os.path.join('/media/pi/', args.storage_name, args.directory_name, name_by_date)
+        folder_path = os.path.join('/media/pi/', args.storage_name, args.directory_name)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         return folder_path
 
     def audio_file_save(folder_path, current_time, data, name_by_date):
-        """ Saves recorded sound in an external storage.
+        """ Saves recorded sound in the available storage.
         It monitors the remaining storage and stops saving
         the files when it is almost full but instead records
         whenever activity is detected in a text file
@@ -167,7 +180,7 @@ try:
             sf.write(file_path , data, args.samplerate)
 
         else:
-            name = os.path.join(folder_path, name_by_date+'.txt')
+            name = os.path.join(folder_path, name_by_date + '.txt')
             f = open(name, 'a')
             f.write(current_time + '\t Activity Detected \n')
             f.close()
@@ -178,15 +191,17 @@ try:
                                 blocksize = BLOCKSIZE,
                                 channels = args.channels,
                                 callback = audio_callback):
-
-                mean, std_dev = calibration()
+                t = datetime.now()
+                date = t.strftime('%Y-%m-%d')
+                mean, std_dev = calibration(date)
                 while True:
                     t = datetime.now()
                     energy, my_block = block_energy()
                     std_deviation = energy - mean
 
                     if std_deviation >= 2 * std_dev:
-                        print('Activity detected')
+                        print('Activity detected', (energy, std_deviation))
+                        gate_pulse.value = True
                         blocks_of_interest = np.array(my_block)
 
                         for _ in range(NUM_OF_BLOCKS_TO_SAVE - 1):
@@ -194,22 +209,23 @@ try:
                             my_block = my_block.flatten()
                             blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
 
+                        current_time = t.strftime('%Y-%m-%d-%H-%M-%S')
                         name_by_date = t.strftime('%Y-%m-%d')
-                        current_time = t.strftime('%H-%M-%S')
+
                         try:
                             if args.storage_name != 'none':
-                                folder_path = external_storage(name_by_date)
+                                folder_path = external_storage()
                                 audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
 
                             else:
-                                folder_path = sd_card(name_by_date)
+                                folder_path = sd_card()
                                 audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
 
                         except Exception as storage_error:
                             logging.info(str(storage_error))
-                            folder_path = sd_card(name_by_date)
+                            folder_path = sd_card()
                             audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
-
+                        gate_pulse.value = False
 
 
         except KeyboardInterrupt:
