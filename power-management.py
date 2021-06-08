@@ -65,8 +65,11 @@ try:
     args = parser.parse_args()
 
 
-    gate_pulse = digitalio.DigitalInOut(board.D18) #Set the GPIO PIN 3 as a d$
-    gate_pulse.direction = digitalio.Direction.OUTPUT #Set GPIO PIN 3 as an out$
+    gate_pulse = digitalio.DigitalInOut(board.D18) #Set the GPIO PIN 18 as a digital pin
+    gate_pulse.direction = digitalio.Direction.OUTPUT #Set GPIO PIN 18 as an output pin
+
+    gate_pulse2 = digitalio.DigitalInOut(board.D23)  #set GPIO pin 23 as a digital pin
+    gate_pulse2.direction = digitalio.Direction.OUTPUT #set GPIO pin as an output pin
 
     def sd_card():
         """Returns a string which is the path to store the voltage reading csv
@@ -116,6 +119,9 @@ try:
             count += 1
 
             if count % 10 == 0:
+                gate_pulse2.value = True #Set GPIO pin 23 high to refresh the stored charge in power supply board capacitor
+                sleep(0.5)
+                gate_pulse2.value = False #Set GPIO pin 23 high to low
                 name_by_date = t.strftime('%Y-%m-%d') + '.csv'
                 current_time = t.strftime('%H-%M-%S')
                 try:

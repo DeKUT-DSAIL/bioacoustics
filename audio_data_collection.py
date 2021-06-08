@@ -97,8 +97,8 @@ try:
 
     q = queue.Queue()
 
-    gate_pulse = digitalio.DigitalInOut(board.D23)  #set GPIO pin 23 as a digital pin
-    gate_pulse.direction = digitalio.Direction.OUTPUT #set GPIO pin as an output pin
+    gate_pulse = digitalio.DigitalInOut(board.D24) #Set the GPIO PIN 24 as a digital pin
+    gate_pulse.direction = digitalio.Direction.OUTPUT #Set GPIO PIN 24 as an output pin
 
     def audio_callback(indata, frames, time, status):
         if status:
