@@ -8,8 +8,9 @@ import digitalio
 import subprocess
 from time import sleep
 from datetime import datetime
+from ast import literal_eval as make_tuple
 
-sleep(120) #delay for 2 minute to have the pi's time set
+sleep(30) #delay for 2 minute to have the pi's time set
 
 logging.basicConfig(filename='power.log',
                     level=logging.DEBUG,
@@ -31,20 +32,12 @@ try:
                             metavar='',
                             help='The cut off voltage.')
 
-    parser.add_argument('-w_h',
-                            '--wake_hour',
-                            type=int,
-                            default=5,
+    parser.add_argument('-w',
+                            '--windows',
+                            default=((5,11),),
                             metavar='',
-                            help='The hour (24 hour clock system) the pi should wake up.')
+                            help='a tuple of tuples containing time intervals of active hours.')
 
-
-    parser.add_argument('-s_h',
-                            '--shutdown_hour',
-                            type=int,
-                            default=11,
-                            metavar='',
-                            help='The hour in 24 hour clock system the pi should shutdown.')
 
     parser.add_argument('-s_n',
                             '--storage_name',
@@ -95,25 +88,131 @@ try:
         return path
 
 
-    def rpi_shutdown(message):
+    def rpi_shutdown(message, rtc_wake_hour, next_day_flag):
         print('The system will shutdown in a few.')
-        rtc.alarm(args.wake_hour)                                      #Call the al$
+        rtc.alarm(rtc_wake_hour, next_day_flag)                                      #Call the al$
         gate_pulse.value = True #Set GPIO pin 18 high to gate trigger the timer circuit thyristor
         sleep(0.5)
         gate_pulse.value = False
         logging.info(message)
         subprocess.call(['sudo', 'shutdown' ,'now']) #Shutdown the Pi
 
+
+
+    
+
+    def alarm_hour_generator(current_hour, windows):
+        """Generates the hour to set the RTC alarm
+        Args: current_hour: current hour
+            windows: a tuple of tuples containing time intervals of active hours
+        Returns: shutdown_hour-time to shutdown the system
+                rtc_wake_hour-time to wake the system
+                next_day_flag-a flag that is true if the wake hour is the following day
+        """
+        
+        hours = [hour for hour in range(0,24)]
+        
+        next_day_flag = True #initialize a flag to take care of days transition as True
+        
+        if len(windows) == 1:
+            shutdown_hour = windows[0][1]
+            rtc_wake_hour = windows[0][0]
+            
+        else:
+
+            active_hours = []
+
+            for window in windows:
+
+                #takes care of a case when there is a window that transitions to the following day
+                if window[0] < window[1]:
+                    for hour in range(window[0], window[1]):
+                        active_hours.append(hour)
+                else:
+                    for hour in range(window[0], 24):
+                        active_hours.append(hour)
+                    for hour in range(0, window[1]):
+                        active_hours.append(hour)
+
+                    next_day_flag = False #set day transition as false
+
+            wake_up_hours = [window[0] for window in windows]
+            shutdown_hours = [window[1] for window in windows]
+
+            inactive_hours = list(set(hours) - set(active_hours))
+            active_hours, inactive_hours, wake_up_hours, shutdown_hours
+
+
+
+            #case 1: system wakes during an active window
+            #case 2: system wakes during inactive hours
+
+            #system wakes during an active window
+            if current_hour in active_hours:
+                #search for shutdown time
+                for indx, window in enumerate(windows):
+
+                    #takes care of a case when there is a window that transitions to the following day
+                    if window[0] < window[1]:
+                        window_hours = [hour for hour in range(window[0], window[1])]
+
+
+                    else:
+
+                        window_hours = []
+                        for hour in range(window[0], 24):
+                            window_hours.append(hour)
+                        for hour in range(0, window[1]):
+                            window_hours.append(hour)
+
+
+
+                    if current_hour in window_hours:
+                        shutdown_hour = windows[indx][1]
+
+                        #incase it's not the last window
+                        if indx +1 < len(windows):
+                            next_day_flag = False #set day transition as false
+                            rtc_wake_hour = windows[indx + 1][0]
+
+
+                        #incase it is the last window
+                        else:
+                            print('last window')
+                            rtc_wake_hour = windows[0][0]
+
+            #system wakes during inactive hours
+            #incase it's past the last shutdown hour
+            else:
+                if current_hour > max(active_hours):
+                    shutdown_hour = current_hour
+                    rtc_wake_hour = windows[0][0]
+
+
+                else:
+                    hours_of_interest = [(indx, wake_hour) for indx, wake_hour in enumerate(wake_up_hours)
+                                        if (wake_hour - current_hour > 0)]
+                    print(hours_of_interest)
+                    shutdown_hour = current_hour
+                    rtc_wake_hour = hours_of_interest[0][1]
+                    next_day_flag = False
+
+        return shutdown_hour, rtc_wake_hour, next_day_flag
+
     count = 0 # Initialize count at zero
+
+    windows = make_tuple(args.windows)
 
     while True:
         try:
-
-            t = datetime.now() #get the current time of the pi
-            hour = int(t.strftime('%H'))
-            if hour >= args.shutdown_hour:
+            current_time = datetime.now() #get the current time of the pi
+            current_hour = int(current_time.strftime('%H'))
+            shutdown_hour, rtc_wake_hour, next_day_flag = alarm_hour_generator(current_hour, windows)
+            
+            
+            if current_hour >= shutdown_hour:
                 message = 'Shutting down time'
-                rpi_shutdown(message)
+                rpi_shutdown(message, rtc_wake_hour, next_day_flag)
             voltage = adc.volt()
             print(voltage)
             count += 1
@@ -145,7 +244,9 @@ try:
                     print(voltage,'\nBattery has recovered.')
                 elif voltage <= args.depth_of_discharge:
                     message = 'Shutting down due to low battery voltage'
-                    rpi_shutdown(message)
+                    rtc_wake_hour = args.windows[0][0]
+                    next_day_flag = True
+                    rpi_shutdown(message, rtc_wake_hour, next_day_flag)
             sleep(30)
         except KeyboardInterrupt:
             sys.exit()

@@ -105,10 +105,21 @@ def next_day(hour):
             -1,-1)
     return t
 
-def alarm(hour):
+def alarm(hour, next_day_flag):
     """ Set the alarm at 5.00 am the following"""
-    hour = hour
-    t = next_day(hour)
+
+    if next_day_flag:
+        t = next_day(hour)
+
+    else:
+        t = time_dict()
+        t = (t['tm_year'],
+            t['tm_mon'],
+            t['tm_mday'],
+            hour, 0, 0,
+            t['tm_wday'],
+            -1,-1)
+            
     rtc.alarm1 = (time.struct_time(t), "daily")
     if rtc.alarm1_status:
         #print("wake up!")
