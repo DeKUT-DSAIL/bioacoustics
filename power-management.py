@@ -34,7 +34,7 @@ try:
 
     parser.add_argument('-w',
                             '--windows',
-                            default=((5,11),),
+                            default="((5,11),)",
                             metavar='',
                             help='a tuple of tuples containing time intervals of active hours.')
 
