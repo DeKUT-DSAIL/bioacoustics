@@ -221,8 +221,8 @@ try:
                 gate_pulse2.value = True #Set GPIO pin 23 high to refresh the stored charge in power supply board capacitor
                 sleep(0.5)
                 gate_pulse2.value = False #Set GPIO pin 23 high to low
-                name_by_date = t.strftime('%Y-%m-%d') + '.csv'
-                current_time = t.strftime('%H-%M-%S')
+                name_by_date = current_time.strftime('%Y-%m-%d') + '.csv'
+                current_time = current_time.strftime('%H-%M-%S')
                 try:
                     if args.storage_name != 'none':
                         path = external_storage()
