@@ -10,7 +10,7 @@ from time import sleep
 from datetime import datetime
 from ast import literal_eval as make_tuple
 
-sleep(30) #delay for 2 minute to have the pi's time set
+sleep(90) #delay for 90 seconds to have the pi's time set
 
 logging.basicConfig(filename='power.log',
                     level=logging.DEBUG,
