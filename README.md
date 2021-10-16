@@ -7,7 +7,7 @@ The idea behind automatic acoustic classification is that birds produce characte
 
 ## How does it work?
 
-Sound produced by a given bird species sounds differently from sound from another species due to difference in frequency components of these sounds. If we can extract the frequency components of a sound, we can be able to describe that sound and also differentiate it from another sound by comparing their frequency components. Sounds produced by birds of the same species will have frequency components that are unique to that species. We can visualize the frequency components of a sound using a spectrogram. A spectrogram is a plot of frequency against time.
+Sound produced by a given bird species sounds differently from sound from another species due to difference in frequency components of these sounds. If we can extract the frequency components of a sound, we can be able to describe that sound. Sounds produced by birds of the same species will have frequency components that are unique to that species. Therefore, we can differentiate different birds species by comparing the frequency components of the sound they produce. A spectrogram is (plot of frequency against time) is used to visualize the frequency components of sound.
 
 <p align="center">
   <img width="345" height="225" src="/img/grey-backed.png">
@@ -16,7 +16,7 @@ Sound produced by a given bird species sounds differently from sound from anothe
 </p>
 
 <p align="center"> 
-  <em>Figure 1: SpectrogramS of a Grey-backed Camaroptera (left) and Hartlaub's Turacos (right)</em>
+  <em>Figure 1: Spectrograms of a Grey-backed Camaroptera (left) and Hartlaub's Turacos (right)</em>
 </p>
 
 Figure 1 above shows spectrograms of a Greybacked Camaroptera and Hartlaub's Turacos. By looking at the two spectrograms, we can see that the spectrum of the sounds from the two birds are different. We can then treat the spectrograms as images and feed them to a machine learning model for classification. Therefore, by computing spectrograms of different bird species' sounds we can train a machine learning model that will be used for acoustic classification of birds. 
@@ -29,7 +29,7 @@ Figure 1 above shows spectrograms of a Greybacked Camaroptera and Hartlaub's Tur
   <em>Figure 2: A flow diagram of how acoustic classification of bird species is acheived.</em>
 </p>
 
-After training a model, we can then deploy it on an acoustic sensor (a Raspberry Pi based acoustic sensor will be used for our case) for automatic acoustic classification of birds in the ecosystems.
+After training a model, we can then deploy it on an acoustic sensor for automatic acoustic classification of birds in the ecosystems.
 
 ## Acoustic Data Collection
 
