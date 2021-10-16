@@ -1,11 +1,9 @@
 import os
 import csv
 import sys
-import board
 import queue
 import logging
 import argparse
-import digitalio
 import subprocess
 import numpy as np
 import soundfile as sf
@@ -13,6 +11,7 @@ from time import sleep
 import sounddevice as sd
 from shutil import disk_usage
 from datetime import datetime
+import RPi.GPIO as GPIO
 
 sleep(30) #sleep for thirty seconds to wait the Pi's time to be set.
 
@@ -23,8 +22,6 @@ logging.basicConfig(filename='data.log',
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
 try:
-
-
 
     parser = argparse.ArgumentParser(description='Detect audio activity and save 10s long audio files')
     parser.add_argument('-c',
@@ -99,6 +96,12 @@ try:
     sd.default.device = 'USB PnP Sound Device'
 
     q = queue.Queue()
+    
+    pin = 24
+    
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
     gate_pulse = digitalio.DigitalInOut(board.D24) #Set the GPIO PIN 24 as a digital pin
     gate_pulse.direction = digitalio.Direction.OUTPUT #Set GPIO PIN 24 as an output pin
@@ -204,7 +207,7 @@ try:
 
                     if std_deviation >= 2 * std_dev:
                         print('Activity detected', (energy, std_deviation))
-                        gate_pulse.value = True
+                        GPIO.output(pin, GPIO.HIGH)
                         blocks_of_interest = np.array(my_block)
 
                         for _ in range(NUM_OF_BLOCKS_TO_SAVE - 1):
@@ -228,10 +231,11 @@ try:
                             logging.info(str(storage_error))
                             folder_path = sd_card()
                             audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
-                        gate_pulse.value = False
+                        GPIO.output(pin, GPIO.LOW)
 
 
         except KeyboardInterrupt:
+            GPIO.output(pin, GPIO.LOW)
             sys.exit()
 
     if __name__ == '__main__':
