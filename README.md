@@ -10,8 +10,8 @@ The idea behind automatic acoustic classification is that birds produce characte
 Sound produced by a given bird species sounds differently from sound from another species due to difference in frequency components of these sounds. If we can extract the frequency components of a sound, we can be able to describe that sound and also differentiate it from another sound by comparing their frequency components. Sounds produced by birds of the same species will have frequency components that are unique to that species. We can visualize the frequency components of a sound using a spectrogram. A spectrogram is a plot of frequency against time.
 
 <p align="center">
-  <img width="230" height="150" src="/img/grey-backed.png">
-  <img width="230" height="150" src="/img/hartlaub's-turacos-spectrogram.png">
+  <img width="345" height="225" src="/img/grey-backed.png">
+  <img width="345" height="225" src="/img/hartlaub's-turacos-spectrogram.png">
   
 </p>
 
