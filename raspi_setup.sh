@@ -21,8 +21,8 @@ sudo apt-get install -y nano
 sudo apt-get -y autoremove
 
 
-python3 -m venv dsp-env
-source dsp-env/bin/activate
+python3 -m venv bioacoustics-env
+source bioacoustics-env/bin/activate
 
 
 pip3 install --upgrade pip
@@ -39,8 +39,3 @@ pip3 install scipy
 pip3 install librosa
 pip3 install tqdm
 pip3 install ipython
-pip3 install adafruit-blinka
-pip3 install adafruit-circuitpython-busdevice
-pip3 install adafruit-circuitpython-register
-pip3 install adafruit-circuitpython-ds3231
-pip3 install adafruit-circuitpython-mcp3xxx
