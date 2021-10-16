@@ -2,8 +2,8 @@
 
 Acoustic monitoring of ecosystems is an efficient and non invasive method that allow us to collect data continuously and remotely in the ecosystems. Using this data we can tell a lot about what is happening in our parks, reserves and conservancies. Birds vocalize a lot and also respond quickly to enviromental changes making them to be an ideal indicator species for acoustic monitoring of the biosphere.
 
-## What is the idea?
-The idea behind automatic acoustic classification is that birds produce characteristic calls/songs that are unique to their species. We can tell different species of birds by just listening to the sound they produce. Acoustic data is collected by deploying acoustic sensors in the field. From analysis of this data, we can assess the state of our ecosystems. A lot of data is collected by the acoustic sensors. Manual classification of this data may turn to be a difficult task. However, we can automate the process by using acoustic sensors that automatically classify the recordings they capture. These sensors are loaded with machine learning models that have been pretrained on birds acoustic data for the classification.
+## Acoustic classification of birds
+The idea behind acoustic classification of birds is that birds produce characteristic calls/songs that are unique to their species. We can tell different species of birds by just listening to the sound they produce. Acoustic data is collected by deploying acoustic sensors in the field. From analysis of this data, we can assess the state of our ecosystems. A lot of data is collected by the acoustic sensors. Manual classification of this data may turn to be a difficult task. However, we can automate the process by using acoustic sensors that automatically classify the recordings they capture. These sensors are loaded with machine learning models that have been pretrained on birds acoustic data for the classification.
 
 ## How does it work?
 
