@@ -42,3 +42,42 @@ Acoustic data is required to train machine learning models for automatic acousti
 <p align="center"> 
   <em>Figure 3: A flow chart of the data collection program.</em>
 </p>
+
+## Setting up the Raspberry Pi
+The following steps outline how to prepare the Raspberry Pi for data collection.
+
+### Requirements
+1. Raspberry Pi 3/4
+2. Raspberry Pi power supply
+3. An SD Card loaded with Raspberry Pi OS
+4. Access to the internet.
+5. Ability to access the Raspberry Pi's command line.
+
+Power the Raspberry Pi and access its commandline. Ensure the Raspberry Pi is connected to the internet. Let's begin by cloning this repository. Run the following command on the Raspberry Pi's terminal:
+
+```cpp
+git clone https://github.com/DeKUT-DSAIL/bioacoustics
+```
+Next run the following commands to create a virtual environment and install the requirements:
+
+```cpp
+cd bioacoustics
+./raspi_setup.sh
+```
+To start data collection, run the following command.
+
+```cpp
+./audio.sh
+```
+
+If you intend for the program to run every time on boot, we will need to schedule it in `crontab`. Run the following the command:
+
+```cpp
+crontab -e
+```
+If it is the first time using crontab, you will be prompted to choose an editor. Choose nano editor by entering 1. Copy and paste the following in the crontab:
+
+```cpp
+@reboot /home/pi/powering-raspberrypi/audio.sh
+```
+ The system is now ready for data collection.
