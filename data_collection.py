@@ -96,15 +96,12 @@ try:
     sd.default.device = 'USB PnP Sound Device'
 
     q = queue.Queue()
-    
+
     pin = 24
-    
+
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
-
-    gate_pulse = digitalio.DigitalInOut(board.D24) #Set the GPIO PIN 24 as a digital pin
-    gate_pulse.direction = digitalio.Direction.OUTPUT #Set GPIO PIN 24 as an output pin
 
     def audio_callback(indata, frames, time, status):
         if status:
