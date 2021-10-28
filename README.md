@@ -49,9 +49,10 @@ The following steps outline how to prepare the Raspberry Pi for data collection.
 ### Requirements
 1. Raspberry Pi 3/4
 2. Raspberry Pi power supply
-3. An SD Card loaded with Raspberry Pi OS
-4. Access to the internet.
-5. Ability to access the Raspberry Pi's command line.
+3. USB microphone
+4. An SD Card loaded with Raspberry Pi OS
+5. Access to the internet.
+6. Ability to access the Raspberry Pi's command line.
 
 Power the Raspberry Pi and access its commandline. Ensure the Raspberry Pi is connected to the internet. Let's begin by cloning this repository. Run the following command on the Raspberry Pi's terminal:
 
@@ -61,13 +62,34 @@ git clone https://github.com/DeKUT-DSAIL/bioacoustics
 Next run the following commands to create a virtual environment and install the requirements:
 
 ```cpp
-cd bioacoustics
-./raspi_setup.sh
+/home/pi/bioacoustics/raspi_setup.sh
 ```
+Before we start collecting data, let's increase the gain of the microphone. Follow the instructions below to increase the gain of the microphone:
+```cpp
+alsamixer
+```
+Next, press `F6` to list the available recording devices. Scroll down to the microphone you intend to increase the gain of using the `up-down` navigation keys. For my case it is the `USB PNP Sound Device` as shown below. 
+
+<p align="center">
+  <img width="auto" height="300" src="/img/mic-select.jpg"> 
+</p>
+
+Press `Enter`. Next press `F5` and then using the `left` navigation key to select the `MIC` option as shown below:
+
+<p align="center">
+  <img width="auto" height="300" src="/img/item_at_min.jpg"> 
+</p>
+
+Next increase the mic gain to the desired gain using the `up` navigation key.
+
+<p align="center">
+  <img width="auto" height="300" src="/img/item_at_max.jpg"> 
+</p>
+
 To start data collection, run the following command.
 
 ```cpp
-./audio.sh
+/home/pi/bioacoustics/audio.sh
 ```
 
 If you intend for the program to run every time on boot, we will need to schedule it in `crontab`. Run the following the command:
@@ -78,6 +100,7 @@ crontab -e
 If it is the first time using crontab, you will be prompted to choose an editor. Choose nano editor by entering 1. Copy and paste the following in the crontab:
 
 ```cpp
-@reboot /home/pi/powering-raspberrypi/audio.sh
+@reboot /home/pi/bioacoustics/audio.sh
 ```
- The system is now ready for data collection.
+
+The system is now ready for data collection.
