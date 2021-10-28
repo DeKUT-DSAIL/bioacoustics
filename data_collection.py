@@ -12,6 +12,7 @@ import sounddevice as sd
 from shutil import disk_usage
 from datetime import datetime
 import RPi.GPIO as GPIO
+import librosa
 
 sleep(30) #sleep for thirty seconds to wait the Pi's time to be set.
 
@@ -32,11 +33,18 @@ try:
                             help='Number of channels (>=1)')
 
     parser.add_argument('-sr',
-                            '--samplerate',
+                            '--stream_samplerate',
                             type=int,
                             default=48000,
                             metavar='',
                             help='The sampling rate in Hertz (use 48000/41000Hz only)')
+
+    parser.add_argument('-r',
+                            '--resample_rate',
+                            type=int,
+                            default=16000,
+                            metavar='',
+                            help='Resampling rate')
 
     parser.add_argument('-b_l',
                             '--block_length',
@@ -87,11 +95,11 @@ try:
 
 
 
-    BLOCKSIZE = int((args.block_length / 1e3) * args.samplerate) #number of samples to process
+    BLOCKSIZE = int((args.block_length / 1e3) * args.stream_samplerate) #number of samples to process
 
     NUM_OF_CALIBRATION_BLOCKS = int(args.calibration_duration / (args.block_length / 1e3)) #number of blocks to set the still condition
 
-    NUM_OF_BLOCKS_TO_SAVE = int((args.samplerate / BLOCKSIZE) * args.length_of_saved_audio) #number of blocks to save as a single file
+    NUM_OF_BLOCKS_TO_SAVE = int((args.stream_samplerate / BLOCKSIZE) * args.length_of_saved_audio) #number of blocks to save as a single file
 
     sd.default.device = 'USB PnP Sound Device'
 
@@ -178,9 +186,9 @@ try:
             file_path = os.path.join(folder_path, name_by_time)
             if args.channels != 1:
                 data = np.reshape(data,
-                                    (int(args.samplerate * args.length_of_saved_audio),
+                                    (int(args.resample_rate * args.length_of_saved_audio),
                                     args.channels))
-            sf.write(file_path , data, args.samplerate)
+            sf.write(file_path , data, args.resample_rate)
 
         else:
             name = os.path.join(folder_path, name_by_date + '.txt')
@@ -190,7 +198,7 @@ try:
 
     def main():
         try:
-            with sd.InputStream(samplerate = args.samplerate,
+            with sd.InputStream(samplerate = args.stream_samplerate,
                                 blocksize = BLOCKSIZE,
                                 channels = args.channels,
                                 callback = audio_callback):
@@ -212,22 +220,24 @@ try:
                             my_block = my_block.flatten()
                             blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
 
+                        audio = librosa.resample(blocks_of_interest, args.stream_samplerate, args.resample_rate)
+
                         current_time = t.strftime('%Y-%m-%d-%H-%M-%S')
                         name_by_date = t.strftime('%Y-%m-%d')
 
                         try:
                             if args.storage_name != 'none':
                                 folder_path = external_storage()
-                                audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
+                                audio_file_save(folder_path, current_time, audio, name_by_date)
 
                             else:
                                 folder_path = sd_card()
-                                audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
+                                audio_file_save(folder_path, current_time, audio, name_by_date)
 
                         except Exception as storage_error:
                             logging.info(str(storage_error))
                             folder_path = sd_card()
-                            audio_file_save(folder_path, current_time, blocks_of_interest, name_by_date)
+                            audio_file_save(folder_path, current_time, audio, name_by_date)
                         GPIO.output(pin, GPIO.LOW)
 
 
@@ -239,4 +249,5 @@ try:
         main()
 
 except Exception as er:
+    GPIO.output(pin, GPIO.LOW)
     logging.info(str(er))
