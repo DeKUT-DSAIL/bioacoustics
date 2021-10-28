@@ -2,6 +2,6 @@
 
 cd bioacoustics
 
-source dsp-env/bin/activate
+source bioacoustics-env/bin/activate
 
 python data_collection.py
