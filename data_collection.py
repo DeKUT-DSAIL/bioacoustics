@@ -1,28 +1,37 @@
-import os
-import csv
-import sys
-import queue
+
 import logging
-import argparse
-import subprocess
-import numpy as np
-import soundfile as sf
-from time import sleep
-import sounddevice as sd
-from shutil import disk_usage
-from datetime import datetime
 import RPi.GPIO as GPIO
-import librosa
 
-sleep(30) #sleep for thirty seconds to wait the Pi's time to be set.
+pin = 24
 
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
 
 logging.basicConfig(filename='data.log',
-                    level=logging.DEBUG,
+                    level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
+
+
 try:
+    import os
+    import csv
+    import sys
+    import queue
+    import argparse
+    import subprocess
+    import numpy as np
+    import soundfile as sf
+    from time import sleep
+    import sounddevice as sd
+    from shutil import disk_usage
+    from datetime import datetime
+    import librosa
+
+    #sleep(30) #sleep for thirty seconds to wait the Pi's time to be set.
+
 
     parser = argparse.ArgumentParser(description='Detect audio activity and save 10s long audio files')
     parser.add_argument('-c',
@@ -32,19 +41,33 @@ try:
                             metavar='',
                             help='Number of channels (>=1)')
 
-    parser.add_argument('-sr',
-                            '--stream_samplerate',
+    parser.add_argument('-d',
+                            '--deviceID',
                             type=int,
-                            default=48000,
+                            required=True,
                             metavar='',
-                            help='The sampling rate in Hertz (use 48000/41000Hz only)')
+                            help='Default device ID')
 
-    parser.add_argument('-r',
-                            '--resample_rate',
+    parser.add_argument('-rs',
+                            '--recording_samplerate',
                             type=int,
-                            default=16000,
+                            required=True,
+                            metavar='',
+                            help='The sampling rate in Hertz')
+
+    parser.add_argument('-rr',
+                            '--resampling_rate',
+                            type=int,
+                            required=True,
                             metavar='',
                             help='Resampling rate')
+
+    parser.add_argument('-r',
+                            '--resampling',
+                            type=bool,
+                            required=True,
+                            metavar='',
+                            help='Whether to resample audio or not.')
 
     parser.add_argument('-b_l',
                             '--block_length',
@@ -95,21 +118,15 @@ try:
 
 
 
-    BLOCKSIZE = int((args.block_length / 1e3) * args.stream_samplerate) #number of samples to process
+    BLOCKSIZE = int((args.block_length / 1e3) * args.recording_samplerate) #number of samples to process
 
     NUM_OF_CALIBRATION_BLOCKS = int(args.calibration_duration / (args.block_length / 1e3)) #number of blocks to set the still condition
 
-    NUM_OF_BLOCKS_TO_SAVE = int((args.stream_samplerate / BLOCKSIZE) * args.length_of_saved_audio) #number of blocks to save as a single file
-
-    sd.default.device = 'USB PnP Sound Device'
+    NUM_OF_BLOCKS_TO_SAVE = int((args.recording_samplerate / BLOCKSIZE) * args.length_of_saved_audio) #number of blocks to save as a single file
+    print(NUM_OF_BLOCKS_TO_SAVE)
+    sd.default.device = args.deviceID
 
     q = queue.Queue()
-
-    pin = 24
-
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
     def audio_callback(indata, frames, time, status):
         if status:
@@ -172,23 +189,47 @@ try:
             os.makedirs(folder_path)
         return folder_path
 
+    def audio_resampling(data):
+        """Resamples audio
+        Args: data- audio samples array
+        Returns resampled audio array"""
+
+        if args.channels != 1:
+            channels_samples = np.array([])
+            for i in range(args.channels):
+                channels_samples = np.concatenate((channels_samples, librosa.resample(data[:,i], args.recording_samplerate, args.resampling_rate)))
+
+            resampled_data = channels_samples.reshape((int(args.length_of_saved_audio * args.resampling_rate), args.channels))
+        else:
+            resampled_data = librosa.resample(data, args.recording_samplerate, args.resampling_rate)
+
+        return resampled_data
+
+
     def audio_file_save(folder_path, current_time, data, name_by_date):
         """ Saves recorded sound in the available storage.
         It monitors the remaining storage and stops saving
         the files when it is almost full but instead records
         whenever activity is detected in a text file
 
-        Args: data- a numpy array containing audio samples."""
+        Args: data- a numpy array containing audio samples.
+              folder_path- path to save recording
+              current_time- current time
+              name_by_dat- timestamp name"""
 
         name_by_time = current_time + '.wav' #timestamp for the audio file name
         usage = disk_usage(folder_path)
         if usage.used / usage.total < args.storage_threshold:
             file_path = os.path.join(folder_path, name_by_time)
-            if args.channels != 1:
-                data = np.reshape(data,
-                                    (int(args.resample_rate * args.length_of_saved_audio),
-                                    args.channels))
-            sf.write(file_path , data, args.resample_rate)
+
+            if args.resampling:
+                sampling_rate = args.resampling_rate
+                audio = audio_resampling(data)
+            else:
+                sampling_rate = args.recording_samplerate
+                audio = data
+
+            sf.write(file_path , audio, sampling_rate)
 
         else:
             name = os.path.join(folder_path, name_by_date + '.txt')
@@ -198,7 +239,7 @@ try:
 
     def main():
         try:
-            with sd.InputStream(samplerate = args.stream_samplerate,
+            with sd.InputStream(samplerate = args.recording_samplerate,
                                 blocksize = BLOCKSIZE,
                                 channels = args.channels,
                                 callback = audio_callback):
@@ -215,12 +256,17 @@ try:
                         GPIO.output(pin, GPIO.HIGH)
                         blocks_of_interest = np.array(my_block)
 
+
                         for _ in range(NUM_OF_BLOCKS_TO_SAVE - 1):
                             my_block = q.get()
                             my_block = my_block.flatten()
                             blocks_of_interest = np.concatenate((blocks_of_interest, my_block))
 
-                        audio = librosa.resample(blocks_of_interest, args.stream_samplerate, args.resample_rate)
+
+                        if args.channels != 1:
+                            audio = blocks_of_interest.reshape((int(args.recording_samplerate * args.length_of_saved_audio), args.channels))
+                        else:
+                            audio = blocks_of_interest
 
                         current_time = t.strftime('%Y-%m-%d-%H-%M-%S')
                         name_by_date = t.strftime('%Y-%m-%d')
@@ -242,12 +288,13 @@ try:
 
 
         except KeyboardInterrupt:
-            GPIO.output(pin, GPIO.LOW)
+            GPIO.cleanup()
             sys.exit()
 
     if __name__ == '__main__':
         main()
 
 except Exception as er:
-    GPIO.output(pin, GPIO.LOW)
+    print(er)
+    GPIO.cleanup()
     logging.info(str(er))
