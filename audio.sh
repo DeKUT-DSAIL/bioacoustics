@@ -4,4 +4,4 @@ cd bioacoustics
 
 source bioacoustics-env/bin/activate
 
-python data_collection.py
+python data_collection.py --recording_samplerate 48000 --resampling_rate 16000 --resampling True --deviceID 2 
