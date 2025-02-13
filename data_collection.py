@@ -1,12 +1,4 @@
-
 import logging
-import RPi.GPIO as GPIO
-
-pin = 24
-
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
 
 logging.basicConfig(filename='data.log',
@@ -25,6 +17,7 @@ try:
     import numpy as np
     import soundfile as sf
     from time import sleep
+    from gpiozero import LED
     import sounddevice as sd
     from shutil import disk_usage
     from datetime import datetime
@@ -117,6 +110,7 @@ try:
     args = parser.parse_args()
 
 
+    activity_led = LED(24) #activity LED blink pin
 
     BLOCKSIZE = int((args.block_length / 1e3) * args.recording_samplerate) #number of samples to process
 
@@ -124,7 +118,7 @@ try:
 
     NUM_OF_BLOCKS_TO_SAVE = int((args.recording_samplerate / BLOCKSIZE) * args.length_of_saved_audio) #number of blocks to save as a single file
     print(NUM_OF_BLOCKS_TO_SAVE)
-    sd.default.device = args.deviceID
+    #sd.default.device = args.deviceID
 
     q = queue.Queue()
 
@@ -201,7 +195,7 @@ try:
 
             resampled_data = channels_samples.reshape((int(args.length_of_saved_audio * args.resampling_rate), args.channels))
         else:
-            resampled_data = librosa.resample(data, args.recording_samplerate, args.resampling_rate)
+            resampled_data = librosa.resample(data, orig_sr=args.recording_samplerate, target_sr=args.resampling_rate)
 
         return resampled_data
 
@@ -253,7 +247,7 @@ try:
 
                     if std_deviation >= 2 * std_dev:
                         print('Activity detected', (energy, std_deviation))
-                        GPIO.output(pin, GPIO.HIGH)
+                        activity_led.on()
                         blocks_of_interest = np.array(my_block)
 
 
@@ -284,11 +278,10 @@ try:
                             logging.info(str(storage_error))
                             folder_path = sd_card()
                             audio_file_save(folder_path, current_time, audio, name_by_date)
-                        GPIO.output(pin, GPIO.LOW)
+                        activity_led.off()
 
 
         except KeyboardInterrupt:
-            GPIO.cleanup()
             sys.exit()
 
     if __name__ == '__main__':
@@ -296,5 +289,4 @@ try:
 
 except Exception as er:
     print(er)
-    GPIO.cleanup()
     logging.info(str(er))
