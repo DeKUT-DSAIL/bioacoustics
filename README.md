@@ -62,29 +62,8 @@ git clone https://github.com/DeKUT-DSAIL/bioacoustics
 Next run the following commands to create a virtual environment and install the requirements:
 
 ```cpp
-/home/pi/bioacoustics/raspi_setup.sh
+/home/pi/bioacoustics/bioacoustics_environment_setup.sh
 ```
-Before we start collecting data, let's increase the gain of the microphone. Follow the instructions below to increase the gain of the microphone:
-```cpp
-alsamixer
-```
-Next, press `F6` to list the available recording devices. Scroll down to the microphone you intend to increase the gain of using the `up-down` navigation keys. For my case it is the `USB PNP Sound Device` as shown below. 
-
-<p align="center">
-  <img width="auto" height="auto" src="/img/mic-select.jpg"> 
-</p>
-
-Press `Enter`. Next press `F5` and then using the `left` navigation key to select the `MIC` option as shown below:
-
-<p align="center">
-  <img width="auto" height="auto" src="/img/item_at_min.jpg"> 
-</p>
-
-Next increase the mic gain to the desired gain using the `up` navigation key.
-
-<p align="center">
-  <img width="auto" height="auto" src="/img/item_at_max.jpg"> 
-</p>
 
 To start data collection, run the following command.
 
