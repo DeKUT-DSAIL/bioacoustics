@@ -7,7 +7,7 @@
 3. MicroSD card reader
 4. A computer with internet access
 
-## Steps of Installing Raspberry Pi OS
+## Steps for Installing Raspberry Pi OS
 Follow the following steps to install the Raspberry Pi OS on a microSD card.
 
 ### Step 1: Mount the microSD card
