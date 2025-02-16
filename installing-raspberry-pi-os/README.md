@@ -26,7 +26,7 @@ Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating
 </p>
 
 ### Step 3: Choose device
-Click the `Choose Device` button to select the Raspberry Pi version you have. The Raspberry Pi versions will be displayed as shown in Figure 2.    
+Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. The Raspberry Pi versions will be displayed as shown in Figure 2.    
 
 <p align="center">
   <img width="345" height="225" src="/img/rpi-imager-choose-device.png">
@@ -37,27 +37,34 @@ Click the `Choose Device` button to select the Raspberry Pi version you have. Th
   <em>Figure 2: List of Raspberry Pi versions.</em>
 </p>
 
-
-
-
-
-
-## Acoustic classification of birds
-
-
-## How does it work?
-
-
+Choose the device for which you are preparing the microSD card. Let us choose Raspberry Pi 3 for this tutorial. After selecting the Raspberry Pi version, the Raspberry Pi Imager will return to home page and display the selected device as shown in Figure 3.
 
 <p align="center">
-  <img width="345" height="225" src="/img/grey-backed.png">
-  <img width="345" height="225" src="/img/hartlaub's-turacos-spectrogram.png">
+  <img width="345" height="225" src="/img/rpi-imager-rpi3-choice.png">
   
 </p>
 
 <p align="center"> 
-  <em>Figure 1: Spectrograms of a Grey-backed Camaroptera (left) and Hartlaub's Turacos (right)</em>
+  <em>Figure 3: Raspberry Pi Image homepage showing Raspberry Pi 3 as the selected device.</em>
 </p>
+
+### Step 4: Choose the operating system
+The Raspberry Pi supports numerous operating systems. It features various editions of Raspberry Pi OS, including 64-bit and 32-bit, as well as Lite, Full, and versions with recommended software. Additionally, operating systems like Ubuntu, Alpine Linux, and RISC OS Pi are accessible through the Raspberry Pi Imager. Your choice of operating system should consider factors like the processing power of your Raspberry Pi model, its intended use, and compatibility with the software. 
+
+To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the variety of operating systems that the Raspberry Pi can run on.
+
+<p align="center">
+  <img width="345" height="225" src="/img/rpi-imager-choose-os.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 3: List of operating systems available on the Raspberry Pi imager platform.</em>
+</p>
+
+
+
+
 
 
 ```cpp
