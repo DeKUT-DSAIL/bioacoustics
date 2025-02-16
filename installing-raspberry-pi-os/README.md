@@ -29,7 +29,7 @@ Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating
 Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. The Raspberry Pi versions will be displayed as shown in Figure 2.    
 
 <p align="center">
-  <img width="345" height="225" src="/img/rpi-imager-choose-device.png">
+  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-choose-device.png">
   
 </p>
 
@@ -40,7 +40,7 @@ Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. Th
 Choose the device for which you are preparing the microSD card. Let us choose Raspberry Pi 3 for this tutorial. After selecting the Raspberry Pi version, the Raspberry Pi Imager will return to the home page and display the selected device as shown in Figure 3.
 
 <p align="center">
-  <img width="345" height="225" src="/img/rpi-imager-rpi3-choice.png">
+  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-rpi3-choice.png">
   
 </p>
 
@@ -54,7 +54,7 @@ The Raspberry Pi supports numerous operating systems. It features various editio
 To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the variety of operating systems that the Raspberry Pi can run on.
 
 <p align="center">
-  <img width="345" height="225" src="/img/rpi-imager-choose-os.png">
+  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-choose-os.png">
   
 </p>
 
@@ -65,7 +65,7 @@ To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the
 Click the OS edition you intend to install for your Raspberry Pi. Let us choose Raspberry Pi OS (32-bit) for this tutorial. After selecting the Raspberry Pi OS, the Raspberry Pi Imager will return to the home page and display the selected OS as shown in Figure 5.
 
 <p align="center">
-  <img width="345" height="225" src="/img/rpi-imager-32-bit-os.png">
+  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-32-bit-os.png">
   
 </p>
 
