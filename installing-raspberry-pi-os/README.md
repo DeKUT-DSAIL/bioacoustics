@@ -45,7 +45,7 @@ Choose the device for which you are preparing the microSD card. Let us choose Ra
 </p>
 
 <p align="center"> 
-  <em>Figure 3: Raspberry Pi Image homepage showing Raspberry Pi 3 as the selected device.</em>
+  <em>Figure 3: Raspberry Pi Imager homepage showing Raspberry Pi 3 as the selected device.</em>
 </p>
 
 ### Step 4: Choose the operating system
@@ -70,7 +70,7 @@ Click the OS edition you intend to install for your Raspberry Pi. Let us choose 
 </p>
 
 <p align="center"> 
-  <em>Figure 5: Raspberry Pi Image homepage showing RASPBERRY PI 0S (32-BIT) as the selected operating system.</em>
+  <em>Figure 5: Raspberry Pi Imager homepage showing RASPBERRY PI 0S (32-BIT) as the selected operating system.</em>
 </p>
 
 
