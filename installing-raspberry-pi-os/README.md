@@ -37,7 +37,7 @@ Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. Th
   <em>Figure 2: List of Raspberry Pi versions.</em>
 </p>
 
-Choose the device for which you are preparing the microSD card. Let us choose Raspberry Pi 3 for this tutorial. After selecting the Raspberry Pi version, the Raspberry Pi Imager will return to home page and display the selected device as shown in Figure 3.
+Choose the device for which you are preparing the microSD card. Let us choose Raspberry Pi 3 for this tutorial. After selecting the Raspberry Pi version, the Raspberry Pi Imager will return to the home page and display the selected device as shown in Figure 3.
 
 <p align="center">
   <img width="345" height="225" src="/img/rpi-imager-rpi3-choice.png">
@@ -59,10 +59,23 @@ To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the
 </p>
 
 <p align="center"> 
-  <em>Figure 3: List of operating systems available on the Raspberry Pi imager platform.</em>
+  <em>Figure 4: List of operating systems available on the Raspberry Pi imager platform.</em>
+</p>
+
+Click the OS edition you intend to install for your Raspberry Pi. Let us choose Raspberry Pi OS (32-bit) for this tutorial. After selecting the Raspberry Pi OS, the Raspberry Pi Imager will return to the home page and display the selected OS as shown in Figure 5.
+
+<p align="center">
+  <img width="345" height="225" src="/img/rpi-imager-32-bit-os.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 5: Raspberry Pi Image homepage showing RASPBERRY PI 0S (32-BIT) as the selected operating system.</em>
 </p>
 
 
+### Step 5: Choosing storage
+The next step is to select the microSD to write the Raspberry Pi OS. Click the `CHOOSE STORAGE` button, and a list of devices plugged into the computer will appear, as shown in Figure 6.
 
 
 
