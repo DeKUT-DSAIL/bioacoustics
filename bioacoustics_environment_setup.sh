@@ -20,7 +20,6 @@ pip install numpy
 pip install scipy
 pip install pandas
 pip install soundfile
-pip install scikit-learn
 pip install matplotlib
 pip install sounddevice
 pip install PyAudio
