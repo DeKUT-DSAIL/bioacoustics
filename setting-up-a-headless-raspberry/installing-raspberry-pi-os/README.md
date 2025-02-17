@@ -17,7 +17,7 @@ Mount the microSD card on a computer that has internet access.
 Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating systems on a microSD card. Download and install the Raspberry Pi Imager (here)[https://www.raspberrypi.com/software/]. Once you’ve installed Imager, launch the application by clicking the Raspberry Pi Imager icon or running rpi-imager on the terminal.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-homepage.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-homepage.png">
   
 </p>
 
@@ -29,7 +29,7 @@ Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating
 Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. The Raspberry Pi versions will be displayed as shown in Figure 2.    
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-choose-device.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-choose-device.png">
   
 </p>
 
@@ -40,7 +40,7 @@ Click the `CHOOSE DEVICE` button to select the Raspberry Pi version you have. Th
 Choose the device for which you are preparing the microSD card. Let us choose Raspberry Pi 3 for this tutorial. After selecting the Raspberry Pi version, the Raspberry Pi Imager will return to the home page and display the selected device as shown in Figure 3.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-rpi3-choice.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-rpi3-choice.png">
   
 </p>
 
@@ -54,7 +54,7 @@ The Raspberry Pi supports numerous operating systems. It features various editio
 To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the variety of operating systems that the Raspberry Pi can run on.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-choose-os.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-choose-os.png">
   
 </p>
 
@@ -65,7 +65,7 @@ To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the
 Click the OS edition you intend to install for your Raspberry Pi. Let us choose Raspberry Pi OS (32-bit) for this tutorial. After selecting the Raspberry Pi OS, the Raspberry Pi Imager will return to the home page and display the selected OS as shown in Figure 5.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-32-bit-os.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-32-bit-os.png">
   
 </p>
 
@@ -78,7 +78,7 @@ Click the OS edition you intend to install for your Raspberry Pi. Let us choose 
 The next step is to select the microSD to write the Raspberry Pi OS. Click the `CHOOSE STORAGE` button, and a list of devices plugged into the computer will appear, as shown in Figure 6.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-storage-list.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-storage-list.png">
   
 </p>
 
@@ -89,7 +89,7 @@ The next step is to select the microSD to write the Raspberry Pi OS. Click the `
 If multiple storage devices are plugged into the computer, please make sure the right storage device is selected. Figure 7 shows the Raspberry Pi Imager after selecting the storage.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-selected-storage.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-selected-storage.png">
   
 </p>
 
@@ -101,7 +101,7 @@ If multiple storage devices are plugged into the computer, please make sure the 
 Click the `NEXT` button and a pop-up will appear as shown in Figure 8. 
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-editing-option.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-editing-option.png">
   
 </p>
 
@@ -112,7 +112,7 @@ Click the `NEXT` button and a pop-up will appear as shown in Figure 8.
 Click `EDIT SETTINGS` to customise the operating system. Check the options and populate the general settings as shown in Figure 9.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-general-settings.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-general-settings.png">
   
 </p>
 
@@ -123,7 +123,7 @@ Click `EDIT SETTINGS` to customise the operating system. Check the options and p
 Customise the settings, such as `username, password, and SSID`, for your use case. Then, click on the `SERVICES` tab to customise the OS further, as shown in Figure 10. 
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-services-settings.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-services-settings.png">
   
 </p>
 
@@ -136,7 +136,7 @@ Customise the settings, such as `username, password, and SSID`, for your use cas
 Click `SAVE` and a pop-up will prompt you to apply customisation settings as shown in Figure 11.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-services-settings.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-services-settings.png">
   
 </p>
 
@@ -147,7 +147,7 @@ Click `SAVE` and a pop-up will prompt you to apply customisation settings as sho
 Click `YES` and you will be prompted to confirm if you are sure you want to continue as shown in Figure 12.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-write.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-write.png">
   
 </p>
 
@@ -158,7 +158,7 @@ Click `YES` and you will be prompted to confirm if you are sure you want to cont
 Click `YES` and the OS installation will start as shown in Figure 13.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-write.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-write.png">
   
 </p>
 
@@ -169,7 +169,7 @@ Click `YES` and the OS installation will start as shown in Figure 13.
 Once the writing process is done, the user will be notified as shown in Figure 14.
 
 <p align="center">
-  <img width="auto" height="auto" src="/installing-raspberry-pi-os/img/rpi-imager-os-installation-complete.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-os-installation-complete.png">
   
 </p>
 
@@ -178,19 +178,3 @@ Once the writing process is done, the user will be notified as shown in Figure 1
 </p>
 
 Click `CONTINUE`. The microSD card is ready for use with the Raspberry Pi.
-
-
-
-
-
-
-
-
-
-
-
-```cpp
-@reboot /home/pi/bioacoustics/audio.sh
-```
-
-The system is now ready for data collection.
