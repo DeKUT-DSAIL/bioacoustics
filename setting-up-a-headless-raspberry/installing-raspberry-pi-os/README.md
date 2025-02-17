@@ -158,7 +158,7 @@ Click `YES` and you will be prompted to confirm if you are sure you want to cont
 Click `YES` and the OS installation will start as shown in Figure 13.
 
 <p align="center">
-  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-write.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-os-writing.png">
   
 </p>
 
