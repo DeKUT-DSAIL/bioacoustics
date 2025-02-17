@@ -1,11 +1,12 @@
-# Installing Raspberry Pi OS
-**NOTE: THESE INSTRUCTIONS WERE PREPARED IN FEBRUARY 2025. THE MATERIALS CONTAINED HERE COULD BE OUT OF DATE. CHECK ON THE OFFICIAL RASPBERRY PI WEBSITE FOR UPDATED INSTALLATION INSTRUCTIONS IF THE ONES OUTLINED HERE DON'T WORK** 
+# SSH Into Raspberry Pi
+The steps outlined here are a guide to accessing the terminal of a headless Raspberry Pi (without a monitor, keyboard, and mouse) using SSH. For this exercise to be successful, ensure you install the operating system on a microSD card using the procedure outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access). 
 
 ## Requirements
-1. Raspberry Pi zero/2/3/4/5
-2. MicroSD card- at least 8 GB
-3. MicroSD card reader
-4. A computer with internet access
+1. Raspberry Pi zero/2/3/4/5—for Raspberry Pi 2, a Wi-Fi dongle is required to connect to a wireless network.
+2. Raspberry Pi power supply.
+3. MicroSD card—with Raspberry Pi OS installed using the steps outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access).
+4. A computer with internet access.
+5. Wireless network or ethernet cable—the Raspberry Pi Zero does not have an ethernet port so a wireless network will be needed. When using a wireless network to SSH into a headless Raspberry Pi, ensure the SSID and password of the network are keyed in their respective places during the OS customisation step in the installation guide mentioned above. 
 
 ## Steps for Installing Raspberry Pi OS
 Follow the following steps to install the Raspberry Pi OS on a microSD card.
