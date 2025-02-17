@@ -179,4 +179,4 @@ Once the writing process is done, the user will be notified as shown in Figure 1
 
 Click `CONTINUE`. The microSD card is ready for use with the Raspberry Pi.
 
-To access the Raspberry Pi via SSH, follow the instructions outlined (here)[https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access].
+To access the Raspberry Pi via SSH, follow the instructions outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access).
