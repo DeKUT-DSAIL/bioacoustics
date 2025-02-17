@@ -17,7 +17,7 @@ Mount the microSD card on a computer that has internet access.
 Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating systems on a microSD card. Download and install the Raspberry Pi Imager (here)[https://www.raspberrypi.com/software/]. Once you’ve installed Imager, launch the application by clicking the Raspberry Pi Imager icon or running rpi-imager on the terminal.
 
 <p align="center">
-  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/headless-raspberry-pi-access/img/putty-raspi-local.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-raspi-local.png">
   
 </p>
 
