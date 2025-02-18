@@ -238,5 +238,5 @@ Enter the username and password and click ok. The GUI of the Raspberry Pi will a
 </p>
 
 <p align="center"> 
-  <em>Figure 16: VRaspberry Pi GUI.</em>
+  <em>Figure 16: Raspberry Pi GUI.</em>
 </p>
