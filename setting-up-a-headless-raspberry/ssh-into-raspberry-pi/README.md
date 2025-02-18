@@ -91,7 +91,7 @@ Press ENTER after entering the password and you will get a console similar to th
 
 
 #### Method 2: Windows, Linux, and macOS users—using CMD or terminal
-Open CMD or terminal and enter either `ssh username@hostname.local` or `ssh username@IP address`. Replace `username` and `hostname` or `IP address` with the details of your Raspberry Pi. Let us use Window's command prompt (CMD) to show how we can SSH into the Raspberry. The same steps will be used in Linux or macOS terminal. In CMD, enter the details as shown in Figure 6.
+Open CMD or terminal and enter either `ssh username@hostname.local` or `ssh username@IP address`. Replace `username` and `hostname` or `IP address` with the details of your Raspberry Pi. Let us use Window's command prompt (CMD) to show how we can SSH into the Raspberry. The same steps will be used in Linux or macOS terminal. In CMD, enter the details as shown in Figure 7.
 
 <p align="center">
   <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-access.png">
@@ -99,10 +99,10 @@ Open CMD or terminal and enter either `ssh username@hostname.local` or `ssh user
 </p>
 
 <p align="center"> 
-  <em>Figure 6: Entering Raspberry Pi details on CMD.</em>
+  <em>Figure 7: Entering Raspberry Pi details on CMD.</em>
 </p>
 
-Press ENTER and you will be prompted as shown in Figure 7.
+Press ENTER and you will be prompted as shown in Figure 8.
 
 <p align="center">
   <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-security-alert.png">
@@ -110,10 +110,10 @@ Press ENTER and you will be prompted as shown in Figure 7.
 </p>
 
 <p align="center"> 
-  <em>Figure 7: Security alert.</em>
+  <em>Figure 8: Security alert.</em>
 </p>
 
-Enter `yes` and press ENTER and you will be prompted to enter the password as shown in Figure 8.
+Enter `yes` and press ENTER and you will be prompted to enter the password as shown in Figure 9.
 
 <p align="center">
   <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-password.png">
@@ -121,10 +121,10 @@ Enter `yes` and press ENTER and you will be prompted to enter the password as sh
 </p>
 
 <p align="center"> 
-  <em>Figure 6: Entering Raspberry Pi details on CMD.</em>
+  <em>Figure 9: Entering Raspberry Pi details on CMD.</em>
 </p>
 
-Once the process is successful, you will get a console similar to Figure 7.
+Once the process is successful, you will get a console similar to Figure 10.
 
 <p align="center">
   <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-successful.png">
@@ -132,7 +132,7 @@ Once the process is successful, you will get a console similar to Figure 7.
 </p>
 
 <p align="center"> 
-  <em>Figure 7: Raspberry Pi terminal.</em>
+  <em>Figure 10: Raspberry Pi terminal.</em>
 </p>
 
 
