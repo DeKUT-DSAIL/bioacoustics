@@ -1,4 +1,4 @@
-# Accessing the Raspberry Pi using SSHSSH
+# Accessing the Raspberry Pi using SSH
 The steps outlined here are a guide to accessing the terminal of a headless Raspberry Pi (without a monitor, keyboard, and mouse) using SSH. For this exercise to be successful, ensure you install the operating system on a microSD card using the procedure outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access). 
 
 ## Requirements
