@@ -135,15 +135,108 @@ Once the process is successful, you will get a console similar to Figure 10.
   <em>Figure 10: Raspberry Pi terminal.</em>
 </p>
 
-
-
-
-
-
-
+### Step 4: Configuring the Raspberry Pi
+Let us configure the interfaces of the Raspberry Pi. The interfaces are essential for connecting the Raspberry Pi with peripherals. Run the following commands on the Raspberry Pi terminal.
 
 ```cpp
-@reboot /home/pi/bioacoustics/audio.sh
+clear
+```
+```cpp
+sudo raspi-config
+```
+The last command opens the Raspberry Pi software configuration tool as shown in Figure 11.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-sudo-raspi-config.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 11: Raspberry Pi software configuration tool.</em>
+</p>
+
+Use the navigation keys to navigate through the tool. Scroll to `Interface Options` and press ENTER. A list of interfaces will be presented as shown in Figure 12.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-interface.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 12: A list of Raspberry Pi interface options.</em>
+</p>
+
+Enable every interface by scrolling through each of them and pressing ENTER. Figures 13 and 14 show the process of enabling VNC server. 
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-sudo-raspi-config.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 13: Prompt to enable VNC server.</em>
+</p>
+
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-sudo-raspi-config.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 14: VNC server enabled.</em>
+</p>
+
+Press ESC to exit the configuration tool after completing the configuration.
+
+### Step 5: Obtain the IP address of the Raspberry Pi
+You can obtain the IP address of the Raspberry Pi by running the following command on its terminal.
+
+```cpp
+hostname -I
 ```
 
-The system is now ready for data collection.
+### Step 6: Accessing the Raspberry Pi GUI
+We will use VNC viewer to access the GUI of the Raspberry Pi. For this step to be successful, ensure the VNC server is enabled as shown in Figure 14 and you have the IP address of the Raspberry Pi. Open the VNC viewer and enter the IP address as shown in Figure 15.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/vnc-viewer-ip-address.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 15: Entering Raspberry Pi IP address on VNC viewer.</em>
+</p>
+
+Press ENTER and an identity check pop-up will appear as shown in Figure 16.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/vnc-viewer-ip-address-popup.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 16: VNC viewer identity check pop-up.</em>
+</p>
+
+Click `Continue` and an authentication pop-up will appear as shown in Figure 17.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/vnc-viewer-password.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 16: VNC viewer authentication pop-up.</em>
+</p>
+
+Enter the username and password and click ok. The GUI of the Raspberry Pi will appear as shown in Figure 17.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/vnc-viewer-gui.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 16: VRaspberry Pi GUI.</em>
+</p>
