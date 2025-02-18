@@ -8,14 +8,20 @@ The steps outlined here are a guide to accessing the terminal of a headless Rasp
 4. A computer with internet access.
 5. Wireless network or ethernet cable—the Raspberry Pi Zero does not have an ethernet port so a wireless network will be needed. When using a wireless network to SSH into a headless Raspberry Pi, ensure the SSID and password of the network are keyed in their respective places during the OS customisation step in the installation guide mentioned above. 
 
-## Steps for Installing Raspberry Pi OS
-Follow the following steps to install the Raspberry Pi OS on a microSD card.
+## Steps for SSH into Raspberry Pi
+Follow the following steps to SSH into the Raspberry Pi.
 
-### Step 1: Mount the microSD card
-Mount the microSD card on a computer that has internet access.
+### Step 1: Install the necessary software
+Download and install PuTTy for Windows [here](https://www.putty.org/) and VNC viewer for Windows, macOS, and Linux [here](https://www.realvnc.com/en/connect/download/viewer/) on your computer.
 
-### Step 2: Install Raspberry Pi Imager
-Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating systems on a microSD card. Download and install the Raspberry Pi Imager (here)[https://www.raspberrypi.com/software/]. Once you’ve installed Imager, launch the application by clicking the Raspberry Pi Imager icon or running rpi-imager on the terminal.
+### Step 2: Establish a connection
+Connect your computer to the wireless network specified during the OS installation process. Alternatively, you can connect your computer and the Raspberry Pi with an ethernet cable. Insert the microSD card loaded with the OS onto the Raspberry Pi and power it on. After a few minutes (about 5 minutes), check if the Raspberry Pi has connected to the wireless network or if the ethernet port is blinking to show a connection has been established. If the Raspberry Pi has connected to  the wireless network or the ethernet is blinking, we can now SSH into the Raspberry Pi.
+
+*NOTE: If you have no way of determining whether the Raspberry Pi has connected to the wireless network, give it about 5 minutes and start executing the step that follows.*
+
+### SSH into Raspberry Pi
+#### 1. Windows
+For Windows users, open PuTTy and enter the hostname set during the general OS customisation step, as shown in Figure 1.
 
 <p align="center">
   <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-raspi-local.png">
@@ -23,9 +29,44 @@ Raspberry Pi Imager is a tool for installing Raspberry Pi OS and other operating
 </p>
 
 <p align="center"> 
-  <em>Figure 1: Homepage of the Raspberry Pi Imager.</em>
+  <em>Figure 1: SSH into the Raspberry Pi using the hostname.</em>
 </p>
 
+*NOTE: If you can obtain the IP address assigned to the Raspberry Pi by the wireless network you can use it in the place of the hostname.* 
+
+Next, click `Open` and the window shown in Figure 2 will appear.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-potential-security-breach.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 2: PuTTy security alert.</em>
+</p>
+
+Click `Accept` and a console will appear as shown in Figure 3.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-potential-security-breach.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 2: PuTTy security alert.</em>
+</p>
+
+#### 2. Linux and macOS users
+For Linux and macOS users, open the terminal and enter either `ssh username@hostname.local` or `ssh username@IP address`. Replace `username` and `hostname` or `IP address` with the details of your Raspberry Pi. Let us use Window's command prompt (CMD) to show how we can SSH into the Raspberry Pi using Linux or macOS terminal. In the terminal, enter the details as shown in Figure 6.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-potential-security-breach.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 2: PuTTy security alert.</em>
+</p>
 
 
 
