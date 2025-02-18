@@ -105,7 +105,7 @@ Open CMD or terminal and enter either `ssh username@hostname.local` or `ssh user
 Press ENTER and you will be prompted as shown in Figure 7.
 
 <p align="center">
-  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-access.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/cmd-ssh-security-alert.png">
   
 </p>
 
