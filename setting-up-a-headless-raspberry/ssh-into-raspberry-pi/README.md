@@ -1,4 +1,4 @@
-# SSH Into Raspberry Pi
+# Accessing the Raspberry Pi using SSHSSH
 The steps outlined here are a guide to accessing the terminal of a headless Raspberry Pi (without a monitor, keyboard, and mouse) using SSH. For this exercise to be successful, ensure you install the operating system on a microSD card using the procedure outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry/headless-raspberry-pi-access). 
 
 ## Requirements
@@ -8,7 +8,7 @@ The steps outlined here are a guide to accessing the terminal of a headless Rasp
 4. A computer with internet access.
 5. Wireless network or ethernet cable—the Raspberry Pi Zero does not have an ethernet port so a wireless network will be needed. When using a wireless network to SSH into a headless Raspberry Pi, ensure the SSID and password of the network are keyed in their respective places during the OS customisation step in the installation guide mentioned above. 
 
-## Steps for SSH into Raspberry Pi
+## Steps for connecting to the Raspberry Pi via SSH
 Follow the following steps to SSH into the Raspberry Pi.
 
 ### Step 1: Install the necessary software
@@ -55,6 +55,40 @@ Click `Accept` and a console will appear as shown in Figure 3.
 <p align="center"> 
   <em>Figure 3: PuTTy security alert.</em>
 </p>
+
+Enter the Raspberry Pi username set during OS installation as shown in Figure 4.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-login-as-pi.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 4: Entering the username.</em>
+</p>
+
+Press ENTER and you will be prompted to enter the password as shown in Figure 5—the password will not appear on the screen as you type.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-login-password.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 5: Entering the password.</em>
+</p>
+
+Press ENTER after entering the password and you will get a console similar to the one in Figure 6 once the process is successful.
+
+<p align="center">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/ssh-into-raspberry-pi/img/putty-first-log-in.png">
+  
+</p>
+
+<p align="center"> 
+  <em>Figure 6: Raspberry Pi terminal.</em>
+</p>
+
 
 #### Method 2: Windows, Linux, and macOS users—using CMD or terminal
 Open CMD or terminal and enter either `ssh username@hostname.local` or `ssh username@IP address`. Replace `username` and `hostname` or `IP address` with the details of your Raspberry Pi. Let us use Window's command prompt (CMD) to show how we can SSH into the Raspberry. The same steps will be used in Linux or macOS terminal. In CMD, enter the details as shown in Figure 6.
