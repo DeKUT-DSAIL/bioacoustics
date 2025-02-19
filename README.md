@@ -50,9 +50,9 @@ The following steps outline how to prepare the Raspberry Pi for data collection.
 1. Raspberry Pi 3/4
 2. Raspberry Pi power supply
 3. USB microphone
-4. A microSD Card loaded with Raspberry Pi OS—follow the steps outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/installing-raspberry-pi-os) to install Raspberry Pi OS.
+4. A microSD Card loaded with Raspberry Pi OS—follow the steps outlined [here](https://github.com/DeKUT-DSAIL/bioacoustics/tree/master/setting-up-a-headless-raspberry) to install Raspberry Pi OS and access its terminal.
 5. Access to the internet.
-6. Ability to access the Raspberry Pi's command line.
+6. Ability to access the Raspberry Pi's terminal.
 
 ### Step 1: Access the Raspberry Pi terminal
 Power the Raspberry Pi and access its terminal. Ensure the Raspberry Pi is connected to the internet. 
