@@ -10,7 +10,7 @@ my_rec = sd.rec(int(duration * fs))
 sd.wait()
 print('Done recording. \n')
 
-print(my_rec, '\n', 'Number of samples: ', myrec.shape)
+print(my_rec, '\n', 'Number of samples: ', my_rec.shape)
 
 plt.plot(my_rec)
 plt.show()
