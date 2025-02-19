@@ -72,7 +72,7 @@ Next, run the following commands to create a virtual environment and install the
 ```
 
 ### Step 4: Connect a USB microphone
-Connect a USB microphone to the Raspberry Pi to record a sample audio. To test whether the USB microphone is detected by the Raspberry Pi, run the following command.
+Connect a USB microphone to the Raspberry Pi to record a sample audio. To test whether the Raspberry Pi detects the USB microphone, run the following command.
 
 ```cpp
 lsusb
@@ -84,8 +84,7 @@ A list of connected devices will appear on the screen as shown below.
 Confirm that the USB microphone is detected. For this example, >>List example<< is the USB microphone connected to the Raspberry Pi.
 
 ### Step 5: Record sample audio
-Let us record a sample 5-second long audio, print the recorded array on the screen and plot it. To plot the audio, ensure you have access graphical user interface of the Raspberry Pi using a monitor or VNC viewer. if not, comment the `plt.plot(my_rec)` line in the `sample_rec.py` file.
->>>sample rec plot screenshot<<
+Let us record a sample 5-second long audio, print the recorded array on the screen and plot it. To plot the audio, ensure you have access to the graphical user interface of the Raspberry Pi using a monitor or VNC viewer. if not, comment the `plt.plot(my_rec)` line in the `sample_rec.py` file.
 
 ### Step 6: Audio data collection
 To start data collection, run the following command.
