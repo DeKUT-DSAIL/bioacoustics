@@ -62,10 +62,10 @@ To choose the operating system, click the `CHOOSE OS` button. Figure 4 shows the
   <em>Figure 4: List of operating systems available on the Raspberry Pi imager platform.</em>
 </p>
 
-Click the OS edition you intend to install for your Raspberry Pi. Let us choose Raspberry Pi OS (32-bit) for this tutorial. After selecting the Raspberry Pi OS, the Raspberry Pi Imager will return to the home page and display the selected OS as shown in Figure 5.
+Click the OS edition you intend to install for your Raspberry Pi. Let us choose Raspberry Pi OS (Legacy, 32-bit) for this tutorial. After selecting the Raspberry Pi OS, the Raspberry Pi Imager will return to the home page and display the selected OS as shown in Figure 5.
 
 <p align="center">
-  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-32-bit-os.png">
+  <img width="auto" height="auto" src="/setting-up-a-headless-raspberry/installing-raspberry-pi-os/img/rpi-imager-64-bit-legacy-os.png">
   
 </p>
 
