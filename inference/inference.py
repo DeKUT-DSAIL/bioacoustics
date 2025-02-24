@@ -1,4 +1,3 @@
-# inference.py 
 from net import ImprovedBirdNet
 import os
 import json
@@ -22,9 +21,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class BirdSoundInference:
-    def __init__(self, model_path, node_id=1):
+    def __init__(self, model_path, data_folder='data', node_id=1):
         self.node_id = node_id
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.data_folder = Path(data_folder)
         self.inference_count_file = "inference/inference_count.txt"
         self.inference_log_file = "inference/inference_history.json"
         self.model_path = model_path
@@ -32,17 +32,16 @@ class BirdSoundInference:
         # Load model and associated data
         self.load_model()
         self.initialize_inference_count()
+        self.processed_files = self.load_processed_files()
 
     def load_model(self):
         """Load the trained model and associated data"""
         try:
-            # Load class names from folder structure
-            self.class_names = ['greybackedcamaroptera', 'hartlaubsturaco', 'tropicalboubou'] 
+            self.class_names = ['greybackedcamaroptera', 'hartlaubsturaco', 'tropicalboubou']
             logger.info(f"Loaded {len(self.class_names)} classes: {self.class_names}")
             
-            # Load model checkpoint
             checkpoint = torch.load(self.model_path, map_location=self.device)
-            
+
             # Initialize model
             # Assuming the input dimension from the first layer of the model
             input_dim = next(iter(checkpoint['model_state_dict'].items()))[1].shape[1]
@@ -50,7 +49,7 @@ class BirdSoundInference:
             
             self.model = ImprovedBirdNet(input_dim, num_classes).to(self.device)
             self.model.load_state_dict(checkpoint['model_state_dict'])
-            
+
             # Initialize feature normalization parameters
             # For now, using identity normalization - you may want to save these during training
             self.feature_mean = torch.zeros(input_dim)
@@ -58,13 +57,11 @@ class BirdSoundInference:
             
             self.model.eval()
             logger.info("Model loaded successfully")
-            
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
     
     def initialize_inference_count(self):
-        """Initialize or load the inference counter"""
         if os.path.exists(self.inference_count_file):
             with open(self.inference_count_file, 'r') as f:
                 self.inference_count = int(f.read().strip())
@@ -73,10 +70,16 @@ class BirdSoundInference:
             self._save_inference_count()
     
     def _save_inference_count(self):
-        """Save the current inference count"""
         with open(self.inference_count_file, 'w') as f:
             f.write(str(self.inference_count))
-    
+
+    def load_processed_files(self):
+        if os.path.exists(self.inference_log_file):
+            with open(self.inference_log_file, 'r') as f:
+                log_data = json.load(f)
+                return {entry['audio_path'] for entry in log_data}
+        return set()
+
     def extract_features(self, audio_path, sr=22050, duration=5):
         """Extract features from audio file"""
         try:
@@ -106,17 +109,16 @@ class BirdSoundInference:
             ])
             
             return features
-            
+
         except Exception as e:
             logger.error(f"Error extracting features from {audio_path}: {str(e)}")
             raise
-    
+
     def normalize_features(self, features):
         """Normalize features using saved mean and std"""
         features_tensor = torch.tensor(features, dtype=torch.float32)
-        normalized_features = (features_tensor - self.feature_mean) / (self.feature_std + 1e-8)
-        return normalized_features
-    
+        return (features_tensor - self.feature_mean) / (self.feature_std + 1e-8)
+
     def make_inference(self, audio_path):
         """Make inference on a single audio file"""
         try:
@@ -150,17 +152,14 @@ class BirdSoundInference:
             
             # Log inference
             self._log_inference(result)
-            
+
             # Return client-facing results
-            client_result = {
+            return {
                 'inference_id': result['inference_id'],
                 'node_id': result['node_id'],
                 'species_name': result['species_name'],
                 'time_of_collection': result['timestamp']
             }
-            
-            return client_result
-            
         except Exception as e:
             logger.error(f"Error during inference: {str(e)}")
             raise
@@ -168,48 +167,36 @@ class BirdSoundInference:
     def _log_inference(self, result):
         """Log inference results to JSON file"""
         try:
-            # Load existing log if it exists
+            log_data = []
             if os.path.exists(self.inference_log_file):
                 with open(self.inference_log_file, 'r') as f:
                     log_data = json.load(f)
-            else:
-                log_data = []
-            
-            # Add new inference
             log_data.append(result)
-            
-            # Save updated log
             with open(self.inference_log_file, 'w') as f:
                 json.dump(log_data, f, indent=2)
-                
             logger.info(f"Inference logged: ID {result['inference_id']}, Species: {result['species_name']}")
-            
         except Exception as e:
             logger.error(f"Error logging inference: {str(e)}")
             raise
 
-def main():
-    # Example usage
-    model_path = "models/best_model.pth"  # Path to your saved model
-    audio_file = r'data/2024-06-05-05-10-30.wav' 
-    
-    try:
-        # Initialize inference system
-        inference_system = BirdSoundInference(model_path)
+    def process_new_files(self):
+        audio_files = list(self.data_folder.glob("*.wav"))
+        new_files = [f for f in audio_files if str(f) not in self.processed_files]
         
-        # Make inference
-        result = inference_system.make_inference(audio_file)
+        if not new_files:
+            logger.info("No new audio files found.")
+            return
         
-        # Print results
-        print("\nInference Results:")
-        print(f"Species: {result['species_name']}")
-        print(f"Node ID: {result['node_id']}")
-        print(f"Inference ID: {result['inference_id']}")
-        print(f"Time of Collection: {result['time_of_collection']}")
-        
-    except Exception as e:
-        logger.error(f"Error in main: {str(e)}")
-        raise
+        logger.info(f"Found {len(new_files)} new audio files.")
+        for file in new_files:
+            try:
+                result = self.make_inference(file)
+                self.processed_files.add(str(file))
+                logger.info(f"Processed {file}: {result}")
+            except Exception as e:
+                logger.error(f"Failed to process {file}: {str(e)}")
 
 if __name__ == "__main__":
-    main()
+    model_path = "models/best_model.pth"
+    inference_system = BirdSoundInference(model_path)
+    inference_system.process_new_files()
