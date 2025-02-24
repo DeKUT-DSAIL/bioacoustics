@@ -1,1 +1,5 @@
 /data
+inference/inference_count.txt
+inference/inference_history.json
+inference/inference_logs.log
+__pycache__/
