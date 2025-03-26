@@ -138,6 +138,7 @@ try:
         condition for the purpose of activity detection"""
 
         l = []
+        print('Calibrating the system to set a silent threshold...')
         for _ in range(NUM_OF_CALIBRATION_BLOCKS):
             block = q.get()
             block = block.flatten()
@@ -151,7 +152,7 @@ try:
         with open('calibration.csv', mode = 'a') as file:
             create = csv.writer(file)
             create.writerow(l)
-        print(mean, std_dev)
+        print('Calibration complete. Thresholds: ', 'Mean-',mean, 'Standard deviation-',std_dev)
         return mean, std_dev
 
 
@@ -217,6 +218,9 @@ try:
         name_by_time = current_time + '.wav' #timestamp for the audio file name
         usage = disk_usage(folder_path)
         if usage.used / usage.total < args.storage_threshold:
+            folder_path = os.path.join(folder_path, name_by_date)
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
             file_path = os.path.join(folder_path, name_by_time)
 
             if args.resampling:
