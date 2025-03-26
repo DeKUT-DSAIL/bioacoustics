@@ -15,6 +15,7 @@ pip install --upgrade pip
 pip install wheel
 pip install cython
 pip install gpiozero
+pip install rpi.gpio
 pip install lgpio
 pip install numpy
 pip install scipy
