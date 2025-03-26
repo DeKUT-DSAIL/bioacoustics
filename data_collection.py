@@ -1,5 +1,8 @@
 import logging
 
+import warnings
+warnings.simplefilter('ignore')
+
 
 logging.basicConfig(filename='data.log',
                     level=logging.INFO,
